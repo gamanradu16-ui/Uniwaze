@@ -186,6 +186,7 @@ BUILDINGS = [
 ]
 
 STYLES_PATH = Path(__file__).with_name("styles.css")
+FLOOR_PLAN_PATH = Path(__file__).with_name("parter incercare.png")
 
 
 def get_room(query: str):
@@ -352,7 +353,6 @@ def render_page(selected_start, room_query):
       <div class="hero__copy">
         <p class="eyebrow">Navigare universitara</p>
         <h1>Gaseste rapid sala din Universitatea din Craiova.</h1>
-        
         <div class="hero__stats">
           <div><strong>3</strong><span>cladiri demo</span></div>
           <div><strong>9</strong><span>sali incluse</span></div>
@@ -410,6 +410,7 @@ def render_page(selected_start, room_query):
         </div>
 
         <div class="campus-map">
+          <img class="floor-plan" src="/parter.png" alt="Harta parterului">
           <div class="map-route">{route_lines}</div>
           {render_map_points(selected_start)}
           {render_buildings(active_building)}
@@ -456,6 +457,11 @@ def app(environ, start_response):
         css = STYLES_PATH.read_bytes()
         start_response("200 OK", [("Content-Type", "text/css; charset=utf-8")])
         return [css]
+
+    if path == "/parter.png":
+        image = FLOOR_PLAN_PATH.read_bytes()
+        start_response("200 OK", [("Content-Type", "image/png")])
+        return [image]
 
     if path != "/":
         start_response("404 Not Found", [("Content-Type", "text/plain; charset=utf-8")])
