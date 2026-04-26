@@ -1,5 +1,6 @@
 from html import escape
 from math import atan2, degrees, sqrt
+import os
 from pathlib import Path
 from urllib.parse import parse_qs
 from wsgiref.simple_server import make_server
@@ -351,10 +352,7 @@ def render_page(selected_start, room_query):
       <div class="hero__copy">
         <p class="eyebrow">Navigare universitara</p>
         <h1>Gaseste rapid sala din Universitatea din Craiova.</h1>
-        <p class="hero__text">
-          Un prototip de tip Waze pentru campus: alegi de unde pleci, cauti sala,
-          iar aplicatia iti arata traseul si pasii de urmat.
-        </p>
+        
         <div class="hero__stats">
           <div><strong>3</strong><span>cladiri demo</span></div>
           <div><strong>9</strong><span>sali incluse</span></div>
@@ -473,8 +471,8 @@ def app(environ, start_response):
 
 
 if __name__ == "__main__":
-    host = "127.0.0.1"
-    port = 8000
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "8000"))
     print(f"UniWay Craiova ruleaza la http://{host}:{port}")
     with make_server(host, port, app) as server:
         server.serve_forever()
