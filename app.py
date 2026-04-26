@@ -188,6 +188,96 @@ BUILDINGS = [
 STYLES_PATH = Path(__file__).with_name("styles.css")
 FLOOR_PLAN_PATH = Path(__file__).with_name("parter incercare.png")
 
+TEXT = {
+    "ro": {
+        "html_lang": "ro",
+        "app_title": "UniWay Craiova",
+        "eyebrow": "Navigare universitara",
+        "hero_title": "Gaseste rapid sala din Universitatea din Craiova.",
+        "hero_stat_1": "cladiri demo",
+        "hero_stat_2": "sali incluse",
+        "hero_stat_3": "server-side",
+        "planner_label": "Planificator traseu",
+        "planner_title": "Unde vrei sa ajungi?",
+        "start_label": "Punct de plecare",
+        "room_label": "Sala dorita",
+        "room_placeholder": "Ex: C205 sau Aula Magna",
+        "submit": "Arata traseul",
+        "quick_rooms": "Sugestii sali",
+        "map_tag": "Harta campus",
+        "map_title": "Vedere rapida asupra traseului",
+        "live_pill": "Python app",
+        "route_tag": "Ghidare",
+        "rooms_tag": "Sali populare",
+        "rooms_title": "Destinatii rapide",
+        "default_summary": "Introdu numele unei sali pentru a vedea traseul recomandat.",
+        "default_title": "Alege o sala",
+        "not_found_title": "Sala nu a fost gasita",
+        "not_found_summary": "Incearca una dintre salile sugerate, de exemplu C205, S24 sau Amfiteatrul E1.",
+        "from_prefix": "Pleci din {start}.",
+        "to_prefix": "Mergi catre {building}.",
+        "language_switch": "Schimba limba",
+        "landing_title": "Alege limba in care vrei sa folosesti aplicatia.",
+        "landing_title_secondary": "Choose the language you want to use for the app.",
+        "landing_text": "Selecteaza romana sau english pentru a primi indicatii mai usor de urmarit in facultate.",
+        "landing_ro": "Romana",
+        "landing_en": "English",
+    },
+    "en": {
+        "html_lang": "en",
+        "app_title": "UniWay Craiova",
+        "eyebrow": "Campus navigation",
+        "hero_title": "Find your classroom at the University of Craiova.",
+        "hero_stat_1": "demo buildings",
+        "hero_stat_2": "rooms included",
+        "hero_stat_3": "server-side",
+        "planner_label": "Route planner",
+        "planner_title": "Where do you want to go?",
+        "start_label": "Starting point",
+        "room_label": "Desired room",
+        "room_placeholder": "Ex: C205 or Aula Magna",
+        "submit": "Show route",
+        "quick_rooms": "Suggested rooms",
+        "map_tag": "Campus map",
+        "map_title": "Quick route overview",
+        "live_pill": "Python app",
+        "route_tag": "Directions",
+        "rooms_tag": "Popular rooms",
+        "rooms_title": "Quick destinations",
+        "default_summary": "Enter a room name to see the recommended route.",
+        "default_title": "Choose a room",
+        "not_found_title": "Room not found",
+        "not_found_summary": "Try one of the suggested rooms, for example C205, S24 or Amfiteatrul E1.",
+        "from_prefix": "You start from {start}.",
+        "to_prefix": "Head towards {building}.",
+        "language_switch": "Change language",
+        "landing_title": "Choose the language for the app.",
+        "landing_title_secondary": "Alege limba in care vrei sa folosesti aplicatia.",
+        "landing_text": "Select Romanian or English so the directions are easier to follow around the faculty.",
+        "landing_ro": "Romanian",
+        "landing_en": "English",
+    },
+}
+
+START_POINT_LABELS = {
+    "intrare-principala": {"ro": "Intrare principala", "en": "Main entrance"},
+    "parcare-centrala": {"ro": "Parcare centrala", "en": "Central parking"},
+    "camin-campus": {"ro": "Camin campus", "en": "Dormitory"},
+    "biblioteca": {"ro": "Biblioteca universitatii", "en": "University library"},
+}
+
+BUILDING_LABELS = {
+    "Corpul Central": {"ro": "Corpul Central", "en": "Central Building"},
+    "Facultatea de Stiinte": {"ro": "Facultatea de Stiinte", "en": "Faculty of Science"},
+    "Electrotehnica": {"ro": "Electrotehnica", "en": "Electrical Engineering"},
+}
+
+FLOOR_LABELS = {
+    "Parter": {"ro": "Parter", "en": "Ground floor"},
+    "Etajul 1": {"ro": "Etajul 1", "en": "1st floor"},
+    "Etajul 2": {"ro": "Etajul 2", "en": "2nd floor"},
+}
+
 
 def get_room(query: str):
     normalized = (query or "").strip().lower()
@@ -221,40 +311,57 @@ def calculate_line(start, end):
     }
 
 
-def render_options(selected_start):
+def t(lang):
+    return TEXT["en"] if lang == "en" else TEXT["ro"]
+
+
+def translate_start_label(key, lang):
+    return START_POINT_LABELS.get(key, {}).get(lang, key)
+
+
+def translate_building_label(label, lang):
+    return BUILDING_LABELS.get(label, {}).get(lang, label)
+
+
+def translate_floor_label(label, lang):
+    return FLOOR_LABELS.get(label, {}).get(lang, label)
+
+
+def render_options(selected_start, lang):
     options = []
     for key, value in START_POINTS.items():
         selected = " selected" if key == selected_start else ""
         options.append(
-            f'<option value="{escape(key)}"{selected}>{escape(value["label"])}</option>'
+            f'<option value="{escape(key)}"{selected}>{escape(translate_start_label(key, lang))}</option>'
         )
     return "".join(options)
 
 
-def render_quick_rooms(selected_start):
+def render_quick_rooms(selected_start, lang):
     chips = []
     for room in ROOMS[:5]:
         chips.append(
-            f'<a class="chip" href="/?start={escape(selected_start)}&room={escape(room["name"])}">{escape(room["name"])}</a>'
+            f'<a class="chip" href="/?lang={escape(lang)}&start={escape(selected_start)}&room={escape(room["name"])}">{escape(room["name"])}</a>'
         )
     return "".join(chips)
 
 
-def render_room_grid(selected_start):
+def render_room_grid(selected_start, lang):
     cards = []
     for room in ROOMS:
         cards.append(
             """
-            <a class="room-card" href="/?start={start}&room={room_name}">
+            <a class="room-card" href="/?lang={lang}&start={start}&room={room_name}">
               <strong>{name}</strong>
               <span>{building} - {floor}</span>
             </a>
             """.format(
+                lang=escape(lang),
                 start=escape(selected_start),
                 room_name=escape(room["name"]),
                 name=escape(room["name"]),
-                building=escape(room["building_label"]),
-                floor=escape(room["floor"]),
+                building=escape(translate_building_label(room["building_label"], lang)),
+                floor=escape(translate_floor_label(room["floor"], lang)),
             )
         )
     return "".join(cards)
@@ -312,32 +419,9 @@ def render_steps(steps):
     return "".join(f"<li>{escape(step)}</li>" for step in steps)
 
 
-def render_page(selected_start, room_query):
-    room = get_room(room_query)
-    start = START_POINTS.get(selected_start, START_POINTS["intrare-principala"])
-    summary = "Introdu numele unei sali pentru a vedea traseul recomandat."
-    steps = ""
-    title = "Alege o sala"
-    active_building = ""
-    route_lines = ""
-
-    if room:
-        full_steps = [
-            f"Pleci din {start['label']}.",
-            f"Mergi catre {room['building_label']}.",
-            *room["steps"],
-        ]
-        title = room["name"]
-        summary = f"{room['name']} - {room['building_label']} - {room['floor']}. {room['summary']}"
-        steps = render_steps(full_steps)
-        active_building = room["building"]
-        route_lines = render_route_lines(build_route_segments(start["coords"], room["coords"]))
-    elif room_query:
-        title = "Sala nu a fost gasita"
-        summary = "Incearca una dintre salile sugerate, de exemplu C205, S24 sau Amfiteatrul E1."
-
+def render_language_page():
     html = f"""<!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -348,40 +432,99 @@ def render_page(selected_start, room_query):
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+  <main class="language-screen">
+    <section class="language-card">
+      <p class="eyebrow">UniWay Craiova</p>
+      <h1>{TEXT["ro"]["landing_title"]}</h1>
+      <p class="language-title-secondary">{TEXT["ro"]["landing_title_secondary"]}</p>
+      <p class="language-text">{TEXT["ro"]["landing_text"]}</p>
+      <p class="language-text">{TEXT["en"]["landing_text"]}</p>
+      <div class="language-actions">
+        <a class="language-button" href="/?lang=ro">{TEXT["ro"]["landing_ro"]}</a>
+        <a class="language-button language-button--alt" href="/?lang=en">{TEXT["en"]["landing_en"]}</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+"""
+    return html.encode("utf-8")
+
+
+def render_page(selected_start, room_query, lang):
+    text = t(lang)
+    room = get_room(room_query)
+    start = START_POINTS.get(selected_start, START_POINTS["intrare-principala"])
+    start_label = translate_start_label(selected_start, lang)
+    summary = text["default_summary"]
+    steps = ""
+    title = text["default_title"]
+    route_lines = ""
+
+    if room:
+        building_label = translate_building_label(room["building_label"], lang)
+        floor_label = translate_floor_label(room["floor"], lang)
+        full_steps = [
+            text["from_prefix"].format(start=start_label),
+            text["to_prefix"].format(building=building_label),
+            *room["steps"],
+        ]
+        title = room["name"]
+        summary = f"{room['name']} - {building_label} - {floor_label}. {room['summary']}"
+        steps = render_steps(full_steps)
+        route_lines = render_route_lines(build_route_segments(start["coords"], room["coords"]))
+    elif room_query:
+        title = text["not_found_title"]
+        summary = text["not_found_summary"]
+
+    html = f"""<!DOCTYPE html>
+<html lang="{text["html_lang"]}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{text["app_title"]}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
   <div class="app-shell">
     <header class="hero">
       <div class="hero__copy">
-        <p class="eyebrow">Navigare universitara</p>
-        <h1>Gaseste rapid sala din Universitatea din Craiova.</h1>
+        <p class="eyebrow">{text["eyebrow"]}</p>
+        <h1>{text["hero_title"]}</h1>
         <div class="hero__stats">
-          <div><strong>3</strong><span>cladiri demo</span></div>
-          <div><strong>9</strong><span>sali incluse</span></div>
-          <div><strong>Python</strong><span>server-side</span></div>
+          <div><strong>3</strong><span>{text["hero_stat_1"]}</span></div>
+          <div><strong>9</strong><span>{text["hero_stat_2"]}</span></div>
+          <div><strong>Python</strong><span>{text["hero_stat_3"]}</span></div>
         </div>
+        <a class="language-link" href="/">{text["language_switch"]}</a>
       </div>
 
       <section class="planner-card" aria-labelledby="planner-title">
         <div class="planner-card__top">
-          <p class="planner-card__label">Planificator traseu</p>
-          <h2 id="planner-title">Unde vrei sa ajungi?</h2>
+          <p class="planner-card__label">{text["planner_label"]}</p>
+          <h2 id="planner-title">{text["planner_title"]}</h2>
         </div>
 
         <form class="route-form" method="get" action="/">
+          <input type="hidden" name="lang" value="{escape(lang)}">
           <label class="field">
-            <span>Punct de plecare</span>
+            <span>{text["start_label"]}</span>
             <select id="start-point" name="start">
-              {render_options(selected_start)}
+              {render_options(selected_start, lang)}
             </select>
           </label>
 
           <label class="field">
-            <span>Sala dorita</span>
+            <span>{text["room_label"]}</span>
             <input
               id="room-search"
               name="room"
               type="text"
               list="rooms-list"
-              placeholder="Ex: C205 sau Aula Magna"
+              placeholder="{text["room_placeholder"]}"
               autocomplete="off"
               value="{escape(room_query)}"
             >
@@ -390,11 +533,11 @@ def render_page(selected_start, room_query):
             </datalist>
           </label>
 
-          <button type="submit" class="cta">Arata traseul</button>
+          <button type="submit" class="cta">{text["submit"]}</button>
         </form>
 
-        <div class="quick-rooms" aria-label="Sugestii sali">
-          {render_quick_rooms(selected_start)}
+        <div class="quick-rooms" aria-label="{text["quick_rooms"]}">
+          {render_quick_rooms(selected_start, lang)}
         </div>
       </section>
     </header>
@@ -403,10 +546,10 @@ def render_page(selected_start, room_query):
       <section class="map-card">
         <div class="section-head">
           <div>
-            <p class="section-tag">Harta campus</p>
-            <h2>Vedere rapida asupra traseului</h2>
+            <p class="section-tag">{text["map_tag"]}</p>
+            <h2>{text["map_title"]}</h2>
           </div>
-          <span class="live-pill">Python app</span>
+          <span class="live-pill">{text["live_pill"]}</span>
         </div>
 
         <div class="campus-map">
@@ -419,7 +562,7 @@ def render_page(selected_start, room_query):
         <section class="route-panel">
           <div class="section-head section-head--compact">
             <div>
-              <p class="section-tag">Ghidare</p>
+              <p class="section-tag">{text["route_tag"]}</p>
               <h2>{escape(title)}</h2>
             </div>
           </div>
@@ -431,13 +574,13 @@ def render_page(selected_start, room_query):
         <section class="rooms-panel">
           <div class="section-head section-head--compact">
             <div>
-              <p class="section-tag">Sali populare</p>
-              <h2>Destinatii rapide</h2>
+              <p class="section-tag">{text["rooms_tag"]}</p>
+              <h2>{text["rooms_title"]}</h2>
             </div>
           </div>
 
           <div class="room-grid">
-            {render_room_grid(selected_start)}
+            {render_room_grid(selected_start, lang)}
           </div>
         </section>
       </aside>
@@ -466,10 +609,14 @@ def app(environ, start_response):
         return [b"Pagina nu a fost gasita."]
 
     params = parse_qs(environ.get("QUERY_STRING", ""))
+    lang = params.get("lang", [""])[0]
     selected_start = params.get("start", ["intrare-principala"])[0]
     room_query = params.get("room", [""])[0]
 
-    body = render_page(selected_start, room_query)
+    if lang not in TEXT:
+        body = render_language_page()
+    else:
+        body = render_page(selected_start, room_query, lang)
     start_response("200 OK", [("Content-Type", "text/html; charset=utf-8")])
     return [body]
 
