@@ -352,7 +352,11 @@ def render_page(selected_start, room_query):
       <div class="hero__copy">
         <p class="eyebrow">Navigare universitara</p>
         <h1>Gaseste rapid sala din Universitatea din Craiova.</h1>
-        
+        <div class="hero__stats">
+          <div><strong>3</strong><span>cladiri demo</span></div>
+          <div><strong>9</strong><span>sali incluse</span></div>
+          <div><strong>Python</strong><span>server-side</span></div>
+        </div>
       </div>
 
       <section class="planner-card" aria-labelledby="planner-title">
