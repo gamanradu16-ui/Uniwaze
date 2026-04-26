@@ -252,23 +252,7 @@ select {
   min-height: 640px;
   overflow: hidden;
   border-radius: 28px;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.55)),
-    repeating-linear-gradient(
-      90deg,
-      rgba(22, 33, 29, 0.04) 0,
-      rgba(22, 33, 29, 0.04) 1px,
-      transparent 1px,
-      transparent 72px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(22, 33, 29, 0.04) 0,
-      rgba(22, 33, 29, 0.04) 1px,
-      transparent 1px,
-      transparent 72px
-    ),
-    linear-gradient(180deg, #eaf5df 0%, #dbe7c8 100%);
+  background: #ffffff;
   border: 1px solid rgba(22, 33, 29, 0.08);
 }
 
@@ -280,30 +264,6 @@ select {
   object-fit: contain;
   object-position: center;
   z-index: 0;
-}
-
-.campus-map::before,
-.campus-map::after {
-  content: "";
-  position: absolute;
-  background: rgba(255, 255, 255, 0.75);
-  border-radius: 999px;
-}
-
-.campus-map::before {
-  width: 82%;
-  height: 22px;
-  left: 9%;
-  top: 58%;
-  transform: rotate(-15deg);
-}
-
-.campus-map::after {
-  width: 72%;
-  height: 18px;
-  left: 14%;
-  top: 31%;
-  transform: rotate(20deg);
 }
 
 .building {

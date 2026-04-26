@@ -412,8 +412,6 @@ def render_page(selected_start, room_query):
         <div class="campus-map">
           <img class="floor-plan" src="/parter.png" alt="Harta parterului">
           <div class="map-route">{route_lines}</div>
-          {render_map_points(selected_start)}
-          {render_buildings(active_building)}
         </div>
       </section>
 
