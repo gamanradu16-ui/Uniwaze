@@ -5,157 +5,95 @@ from pathlib import Path
 from urllib.parse import parse_qs
 from wsgiref.simple_server import make_server
 
+MAP_WIDTH = 2048
+MAP_HEIGHT = 992
+MAP_RATIO = MAP_HEIGHT / MAP_WIDTH
 
-ROOMS = [
-    {
-        "id": "c101",
-        "name": "C101",
-        "building": "corpul-central",
-        "building_label": "Corpul Central",
-        "floor": "Parter",
-        "coords": {"x": 49, "y": 25},
-        "summary": "Sala de curs la parter, aproape de intrarea principala din Corpul Central.",
-        "steps": [
-            "Intra in Corpul Central pe usa principala.",
-            "Mergi inainte pe holul principal aproximativ 20 de metri.",
-            "Sala C101 este pe partea stanga, inainte de casa scarii.",
-        ],
-    },
-    {
-        "id": "c205",
-        "name": "C205",
-        "building": "corpul-central",
-        "building_label": "Corpul Central",
-        "floor": "Etajul 2",
-        "coords": {"x": 53, "y": 22},
-        "summary": "Sala de seminar la etajul 2 in Corpul Central.",
-        "steps": [
-            "Intra in Corpul Central si mergi spre casa scarii principala.",
-            "Urca pana la etajul 2.",
-            "La iesirea de pe scara, vireaza dreapta si continua pe coridor.",
-            "C205 este pe partea dreapta, dupa al doilea colt.",
-        ],
-    },
-    {
-        "id": "aula-magna",
-        "name": "Aula Magna",
-        "building": "corpul-central",
-        "building_label": "Corpul Central",
-        "floor": "Etajul 1",
-        "coords": {"x": 44, "y": 19},
-        "summary": "Aula pentru evenimente mari, accesibila din Corpul Central.",
-        "steps": [
-            "Intra in Corpul Central si urca la etajul 1.",
-            "Urmeaza indicatoarele pentru zona de evenimente.",
-            "Aula Magna este la capatul coridorului principal.",
-        ],
-    },
-    {
-        "id": "s12",
-        "name": "S12",
-        "building": "facultatea-de-stiinte",
-        "building_label": "Facultatea de Stiinte",
-        "floor": "Parter",
-        "coords": {"x": 30, "y": 61},
-        "summary": "Sala de seminar in aripa de sud a Facultatii de Stiinte.",
-        "steps": [
-            "Intra in cladirea Facultatii de Stiinte.",
-            "Tine stanga la receptie si intra pe coridorul sudic.",
-            "S12 este a doua usa pe dreapta.",
-        ],
-    },
-    {
-        "id": "s24",
-        "name": "S24",
-        "building": "facultatea-de-stiinte",
-        "building_label": "Facultatea de Stiinte",
-        "floor": "Etajul 2",
-        "coords": {"x": 27, "y": 55},
-        "summary": "Sala de curs la etajul 2, in zona centrala a cladirii.",
-        "steps": [
-            "Intra in Facultatea de Stiinte si mergi spre scara centrala.",
-            "Urca la etajul 2.",
-            "Dupa scara, mergi inainte pana la panoul digital.",
-            "Sala S24 se afla pe stanga.",
-        ],
-    },
-    {
-        "id": "lab-info-2",
-        "name": "Laborator Info 2",
-        "building": "facultatea-de-stiinte",
-        "building_label": "Facultatea de Stiinte",
-        "floor": "Etajul 1",
-        "coords": {"x": 22, "y": 66},
-        "summary": "Laborator de informatica in aripa vestica.",
-        "steps": [
-            "Intra in cladire si urca la etajul 1.",
-            "Mergi spre aripa vestica, indicata cu panourile albastre.",
-            "Laborator Info 2 este la capatul holului.",
-        ],
-    },
-    {
-        "id": "e08",
-        "name": "E08",
-        "building": "electrotehnica",
-        "building_label": "Electrotehnica",
-        "floor": "Parter",
-        "coords": {"x": 73, "y": 55},
-        "summary": "Sala de curs la parter, aproape de intrarea laterala.",
-        "steps": [
-            "Intra in cladirea de Electrotehnica pe accesul principal.",
-            "Continua pe holul din dreapta.",
-            "E08 este marcata imediat dupa laboratorul de masuratori.",
-        ],
-    },
-    {
-        "id": "e14",
-        "name": "E14",
-        "building": "electrotehnica",
-        "building_label": "Electrotehnica",
-        "floor": "Etajul 1",
-        "coords": {"x": 76, "y": 48},
-        "summary": "Sala de seminar la etajul 1, aproape de zona profesorala.",
-        "steps": [
-            "Intra in Electrotehnica si urca la etajul 1.",
-            "Urmeaza coridorul principal pana la intersectia in T.",
-            "Vireaza stanga si continua inca 15 metri.",
-            "E14 este pe dreapta.",
-        ],
-    },
-    {
-        "id": "amfiteatrul-e1",
-        "name": "Amfiteatrul E1",
-        "building": "electrotehnica",
-        "building_label": "Electrotehnica",
-        "floor": "Parter",
-        "coords": {"x": 69, "y": 62},
-        "summary": "Amfiteatru mare pentru cursuri si prezentari.",
-        "steps": [
-            "Intra in cladire si pastreaza directia spre holul central.",
-            "Treci de zona de afisaj si cauta intrarea larga din stanga.",
-            "Amfiteatrul E1 este semnalizat deasupra accesului.",
-        ],
-    },
-]
+
+POINTS = {
+    "P1": {"x": 6.6, "y": 49.5},
+    "P2": {"x": 6.6, "y": 85.7},
+    "P3": {"x": 6.6, "y": 11.7},
+    "P4": {"x": 49.0, "y": 49.0},
+    "P5": {"x": 49.0, "y": 85.7},
+    "P6": {"x": 49.0, "y": 11.7},
+    "P7": {"x": 61.7, "y": 85.7},
+    "P8": {"x": 61.7, "y": 11.7},
+    "P9": {"x": 93.9, "y": 11.7},
+    "P10": {"x": 93.9, "y": 85.7},
+    "P11": {"x": 61.7, "y": 35.9},
+    "P12": {"x": 61.7, "y": 49.2},
+    "P13": {"x": 93.9, "y": 49.4},
+    "P14": {"x": 93.9, "y": 28.4},
+}
+
+GRAPH = {
+    "P1": ["P2", "P3", "P4"],
+    "P2": ["P1", "P5"],
+    "P3": ["P1", "P6"],
+    "P4": ["P1", "P5", "P6"],
+    "P5": ["P2", "P4", "P7"],
+    "P6": ["P3", "P4", "P8"],
+    "P7": ["P5", "P10", "P12"],
+    "P8": ["P6", "P9", "P11"],
+    "P9": ["P8", "P14"],
+    "P10": ["P7", "P13"],
+    "P11": ["P8", "P12"],
+    "P12": ["P7", "P11"],
+    "P13": ["P10"],
+    "P14": ["P9"],
+}
 
 START_POINTS = {
-    "intrare-principala": {
-        "label": "Intrare principala",
-        "coords": {"x": 14, "y": 76},
-    },
-    "parcare-centrala": {
-        "label": "Parcare centrala",
-        "coords": {"x": 26, "y": 55},
-    },
-    "camin-campus": {
-        "label": "Camin campus",
-        "coords": {"x": 81, "y": 84},
-    },
-    "biblioteca": {
-        "label": "Biblioteca universitatii",
-        "coords": {"x": 20, "y": 24},
-    },
+    "intrare-principala": {"label": "Intrare Principala", "coords": {"x": 2.8, "y": 49.5}, "point": "P1"},
+    "intrare-teatru": {"label": "Intrare Teatru", "coords": {"x": 26.0, "y": 2.4}, "point": "P6"},
+    "intrare-parcare": {"label": "Intrare Parcare", "coords": {"x": 22.0, "y": 96.0}, "point": "P2"},
 }
+
+ROOMS = [
+    {"id": "207", "name": "207", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 5.9, "y": 10.0}, "summary": "Sala din zona stanga sus a etajului."},
+    {"id": "208", "name": "208", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 13.4, "y": 10.0}, "summary": "Sala de pe coridorul superior, in partea stanga."},
+    {"id": "209", "name": "209", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 20.8, "y": 10.0}, "summary": "Sala de pe coridorul superior, inainte de zona centrala."},
+    {"id": "210", "name": "210", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P6", "coords": {"x": 35.2, "y": 10.0}, "summary": "Sala de pe coridorul superior central."},
+    {"id": "211", "name": "211", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P6", "coords": {"x": 43.8, "y": 10.0}, "summary": "Sala de pe coridorul superior, langa grupul sanitar."},
+    {"id": "219", "name": "219", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P6", "coords": {"x": 47.0, "y": 18.0}, "summary": "Sala langa zona Decanat Stiinte."},
+    {"id": "220b", "name": "220B", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P6", "coords": {"x": 53.9, "y": 10.0}, "summary": "Sala de pe coridorul superior, imediat dupa grupul sanitar."},
+    {"id": "220", "name": "220", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P6", "coords": {"x": 57.2, "y": 10.0}, "summary": "Sala de pe coridorul superior central-dreapta."},
+    {"id": "221", "name": "221", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P8", "coords": {"x": 60.6, "y": 10.0}, "summary": "Sala de pe coridorul superior, inainte de aripa dreapta."},
+    {"id": "222", "name": "222", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P11", "coords": {"x": 65.7, "y": 16.8}, "summary": "Sala de pe coridorul vertical din dreapta sus."},
+    {"id": "223", "name": "223", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P11", "coords": {"x": 65.7, "y": 24.9}, "summary": "Sala din zona verticala dreapta, sub 222."},
+    {"id": "223a", "name": "223A", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P11", "coords": {"x": 65.7, "y": 31.0}, "summary": "Sala mica din coloana 223A."},
+    {"id": "224", "name": "224", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P11", "coords": {"x": 65.7, "y": 38.2}, "summary": "Sala din dreptul nodului P11."},
+    {"id": "228", "name": "228", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P11", "coords": {"x": 57.8, "y": 36.0}, "summary": "Sala centrala legata de zona scarilor interioare."},
+    {"id": "230", "name": "230", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 71.9, "y": 43.6}, "summary": "Sala din retragerea coridorului spre dreapta."},
+    {"id": "231", "name": "231", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 69.2, "y": 52.2}, "summary": "Sala de pe nodul central-dreapta."},
+    {"id": "233a", "name": "233A", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 66.1, "y": 52.2}, "summary": "Sala mica langa 231, accesibila din acelasi nod."},
+    {"id": "233b", "name": "233B", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 66.2, "y": 59.8}, "summary": "Sala de pe coloana verticala din zona centrala dreapta."},
+    {"id": "234", "name": "234", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 66.2, "y": 67.6}, "summary": "Sala de sub 233B pe acelasi coridor."},
+    {"id": "235", "name": "235", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 66.2, "y": 75.0}, "summary": "Sala de pe coridorul vertical din dreapta jos."},
+    {"id": "236", "name": "236", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P7", "coords": {"x": 66.2, "y": 83.4}, "summary": "Sala din partea de jos a coloanei drepte."},
+    {"id": "240", "name": "240", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 58.4, "y": 52.4}, "summary": "Sala centrala accesibila din nodul P12."},
+    {"id": "243", "name": "243", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P5", "coords": {"x": 44.8, "y": 72.7}, "summary": "Sala din zona Decanat Horticultura."},
+    {"id": "251", "name": "251", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P5", "coords": {"x": 49.2, "y": 89.2}, "summary": "Sala de pe coridorul inferior central."},
+    {"id": "252", "name": "252", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P5", "coords": {"x": 43.8, "y": 89.2}, "summary": "Sala de pe coridorul inferior, langa 251."},
+    {"id": "253", "name": "253", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P5", "coords": {"x": 36.9, "y": 89.2}, "summary": "Sala de pe coridorul inferior central-stanga."},
+    {"id": "254", "name": "254", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P5", "coords": {"x": 29.8, "y": 89.2}, "summary": "Sala de pe coridorul inferior stanga."},
+    {"id": "255", "name": "255", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P2", "coords": {"x": 19.8, "y": 89.2}, "summary": "Sala de pe coridorul inferior, aripa stanga."},
+    {"id": "256", "name": "256", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P2", "coords": {"x": 12.9, "y": 89.2}, "summary": "Sala de pe coridorul inferior, spre coltul stanga."},
+    {"id": "257", "name": "257", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P2", "coords": {"x": 5.9, "y": 89.2}, "summary": "Sala din coltul stanga jos al etajului."},
+    {"id": "258", "name": "258", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P2", "coords": {"x": 8.3, "y": 79.7}, "summary": "Sala de pe coloana stanga inferioara."},
+    {"id": "261", "name": "261", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P1", "coords": {"x": 8.3, "y": 72.4}, "summary": "Sala de pe coloana stanga, aproape de zona centrala."},
+    {"id": "262", "name": "262", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P1", "coords": {"x": 8.3, "y": 66.6}, "summary": "Sala de pe coloana stanga, intre 261 si 263."},
+    {"id": "263", "name": "263", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P1", "coords": {"x": 8.3, "y": 60.7}, "summary": "Sala de pe coloana stanga, inainte de holul central."},
+    {"id": "268", "name": "268", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P7", "coords": {"x": 72.0, "y": 89.2}, "summary": "Sala de pe coridorul inferior din aripa dreapta."},
+    {"id": "269", "name": "269", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P10", "coords": {"x": 84.4, "y": 89.2}, "summary": "Sala de pe coridorul inferior aproape de coltul dreapta."},
+    {"id": "270", "name": "270", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P10", "coords": {"x": 94.2, "y": 79.6}, "summary": "Sala de pe coloana dreapta inferioara."},
+    {"id": "271", "name": "271", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P10", "coords": {"x": 94.2, "y": 67.5}, "summary": "Sala de pe coloana dreapta, sub scara 4."},
+    {"id": "272", "name": "272", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P13", "coords": {"x": 94.2, "y": 56.0}, "summary": "Sala de pe coloana dreapta, langa scara 4."},
+    {"id": "275", "name": "275", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P14", "coords": {"x": 94.2, "y": 23.0}, "summary": "Sala de pe coloana dreapta superioara."},
+    {"id": "276", "name": "276", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P14", "coords": {"x": 94.2, "y": 15.0}, "summary": "Sala de pe coloana dreapta, aproape de coltul superior."},
+    {"id": "277", "name": "277", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P9", "coords": {"x": 88.9, "y": 10.0}, "summary": "Sala din coltul dreapta sus al etajului."},
+]
 
 MAP_POINTS = [
     {"id": "intrare-principala", "label": "Intrare", "top": "72%", "left": "12%", "modifier": " map-point--start"},
@@ -186,15 +124,15 @@ BUILDINGS = [
 ]
 
 STYLES_PATH = Path(__file__).with_name("styles.css")
-FLOOR_PLAN_PATH = Path(__file__).with_name("parter incercare.png")
+FLOOR_PLAN_PATH = Path(__file__).with_name("etaj-site.png")
 
 TEXT = {
     "ro": {
         "html_lang": "ro",
         "app_title": "UniWay Craiova",
         "eyebrow": "Navigare universitara",
-        "hero_title": "Gaseste rapid sala din Universitatea din Craiova.",
-        "hero_stat_1": "cladiri demo",
+        "hero_title": "Gaseste rapid sala pe etajul hartii tale.",
+        "hero_stat_1": "harta reala",
         "hero_stat_2": "sali incluse",
         "hero_stat_3": "server-side",
         "planner_label": "Planificator traseu",
@@ -205,7 +143,7 @@ TEXT = {
         "submit": "Arata traseul",
         "quick_rooms": "Sugestii sali",
         "map_tag": "Harta campus",
-        "map_title": "Vedere rapida asupra traseului",
+        "map_title": "Traseu real pe etaj",
         "live_pill": "Python app",
         "route_tag": "Ghidare",
         "rooms_tag": "Sali populare",
@@ -213,9 +151,11 @@ TEXT = {
         "default_summary": "Introdu numele unei sali pentru a vedea traseul recomandat.",
         "default_title": "Alege o sala",
         "not_found_title": "Sala nu a fost gasita",
-        "not_found_summary": "Incearca una dintre salile sugerate, de exemplu C205, S24 sau Amfiteatrul E1.",
+        "not_found_summary": "Incearca una dintre salile sugerate, de exemplu 207, 231 sau 277.",
         "from_prefix": "Pleci din {start}.",
         "to_prefix": "Mergi catre {building}.",
+        "step_move": "Continua spre {point}.",
+        "step_arrive": "Intra la sala {room}.",
         "language_switch": "Schimba limba",
         "landing_title": "Alege limba in care vrei sa folosesti aplicatia.",
         "landing_title_secondary": "Choose the language you want to use for the app.",
@@ -227,8 +167,8 @@ TEXT = {
         "html_lang": "en",
         "app_title": "UniWay Craiova",
         "eyebrow": "Campus navigation",
-        "hero_title": "Find your classroom at the University of Craiova.",
-        "hero_stat_1": "demo buildings",
+        "hero_title": "Find your classroom on your real floor plan.",
+        "hero_stat_1": "real map",
         "hero_stat_2": "rooms included",
         "hero_stat_3": "server-side",
         "planner_label": "Route planner",
@@ -239,7 +179,7 @@ TEXT = {
         "submit": "Show route",
         "quick_rooms": "Suggested rooms",
         "map_tag": "Campus map",
-        "map_title": "Quick route overview",
+        "map_title": "Real route across the floor",
         "live_pill": "Python app",
         "route_tag": "Directions",
         "rooms_tag": "Popular rooms",
@@ -247,9 +187,11 @@ TEXT = {
         "default_summary": "Enter a room name to see the recommended route.",
         "default_title": "Choose a room",
         "not_found_title": "Room not found",
-        "not_found_summary": "Try one of the suggested rooms, for example C205, S24 or Amfiteatrul E1.",
+        "not_found_summary": "Try one of the suggested rooms, for example 207, 231 or 277.",
         "from_prefix": "You start from {start}.",
         "to_prefix": "Head towards {building}.",
+        "step_move": "Continue towards {point}.",
+        "step_arrive": "Enter room {room}.",
         "language_switch": "Change language",
         "landing_title": "Choose the language for the app.",
         "landing_title_secondary": "Alege limba in care vrei sa folosesti aplicatia.",
@@ -260,16 +202,13 @@ TEXT = {
 }
 
 START_POINT_LABELS = {
-    "intrare-principala": {"ro": "Intrare principala", "en": "Main entrance"},
-    "parcare-centrala": {"ro": "Parcare centrala", "en": "Central parking"},
-    "camin-campus": {"ro": "Camin campus", "en": "Dormitory"},
-    "biblioteca": {"ro": "Biblioteca universitatii", "en": "University library"},
+    "intrare-principala": {"ro": "Intrare Principala", "en": "Main Entrance"},
+    "intrare-teatru": {"ro": "Intrare Teatru", "en": "Theatre Entrance"},
+    "intrare-parcare": {"ro": "Intrare Parcare", "en": "Parking Entrance"},
 }
 
 BUILDING_LABELS = {
-    "Corpul Central": {"ro": "Corpul Central", "en": "Central Building"},
-    "Facultatea de Stiinte": {"ro": "Facultatea de Stiinte", "en": "Faculty of Science"},
-    "Electrotehnica": {"ro": "Electrotehnica", "en": "Electrical Engineering"},
+    "Facultatea de Horticultura": {"ro": "Facultatea de Horticultura", "en": "Faculty of Horticulture"},
 }
 
 FLOOR_LABELS = {
@@ -287,21 +226,77 @@ def get_room(query: str):
     return None
 
 
-def build_route_segments(start_coords, destination_coords):
-    middle = {
-        "x": (start_coords["x"] + destination_coords["x"]) / 2 + 3,
-        "y": (start_coords["y"] + destination_coords["y"]) / 2 - 4,
+def distance(point_a, point_b):
+    delta_x = point_b["x"] - point_a["x"]
+    delta_y = point_b["y"] - point_a["y"]
+    return sqrt(delta_x * delta_x + delta_y * delta_y)
+
+
+def clamp_coords(coords, padding=3.0):
+    return {
+        "x": min(max(coords["x"], padding), 100 - padding),
+        "y": min(max(coords["y"], padding), 100 - padding),
     }
-    return [
-        calculate_line(start_coords, middle),
-        calculate_line(middle, destination_coords),
-    ]
+
+
+def build_route_segments(point_ids, final_coords=None):
+    segments = []
+    for index in range(len(point_ids) - 1):
+        start_point = POINTS[point_ids[index]]
+        end_point = POINTS[point_ids[index + 1]]
+        segments.append(calculate_line(start_point, end_point))
+
+    if point_ids and final_coords:
+        segments.append(calculate_line(POINTS[point_ids[-1]], clamp_coords(final_coords)))
+
+    return segments
+
+
+def find_path(start_point_id, destination_point_id):
+    if start_point_id == destination_point_id:
+        return [start_point_id]
+
+    frontier = [(0, start_point_id, [start_point_id])]
+    best_cost = {start_point_id: 0}
+
+    while frontier:
+        frontier.sort(key=lambda item: item[0])
+        cost, current, path = frontier.pop(0)
+        if current == destination_point_id:
+            return path
+
+        for neighbor in GRAPH.get(current, []):
+            new_cost = cost + distance(POINTS[current], POINTS[neighbor])
+            if neighbor not in best_cost or new_cost < best_cost[neighbor]:
+                best_cost[neighbor] = new_cost
+                frontier.append((new_cost, neighbor, path + [neighbor]))
+
+    return []
 
 
 def calculate_line(start, end):
     delta_x = end["x"] - start["x"]
     delta_y = end["y"] - start["y"]
-    length = sqrt(delta_x * delta_x + delta_y * delta_y)
+    scaled_delta_y = delta_y * MAP_RATIO
+    length = sqrt(delta_x * delta_x + scaled_delta_y * scaled_delta_y)
+    inset = 0.45
+
+    if length > inset * 2:
+        unit_x = delta_x / length
+        unit_y = scaled_delta_y / length
+        start = {
+            "x": start["x"] + unit_x * inset,
+            "y": start["y"] + (unit_y * inset) / MAP_RATIO,
+        }
+        end = {
+            "x": end["x"] - unit_x * inset,
+            "y": end["y"] - (unit_y * inset) / MAP_RATIO,
+        }
+        delta_x = end["x"] - start["x"]
+        delta_y = end["y"] - start["y"]
+        scaled_delta_y = delta_y * MAP_RATIO
+        length = sqrt(delta_x * delta_x + scaled_delta_y * scaled_delta_y)
+
     angle = degrees(atan2(delta_y, delta_x))
     return {
         "left": f"{start['x']}%",
@@ -325,6 +320,29 @@ def translate_building_label(label, lang):
 
 def translate_floor_label(label, lang):
     return FLOOR_LABELS.get(label, {}).get(lang, label)
+
+
+def point_label(point_id, lang):
+    return translate_start_label(point_id, lang)
+
+
+def build_route_step_text(route_point_ids, room, lang):
+    text = t(lang)
+    if not route_point_ids:
+        return [text["step_arrive"].format(room=room["name"])]
+
+    steps = []
+    for point_id in route_point_ids[1:]:
+        steps.append(text["step_move"].format(point=point_label(point_id, lang)))
+
+    steps.append(text["step_arrive"].format(room=room["name"]))
+    return steps
+
+
+def render_route_debug(route_point_ids):
+    if not route_point_ids:
+        return ""
+    return " -> ".join(route_point_ids)
 
 
 def render_options(selected_start, lang):
@@ -460,6 +478,7 @@ def render_page(selected_start, room_query, lang):
     steps = ""
     title = text["default_title"]
     route_lines = ""
+    route_debug = ""
 
     if room:
         building_label = translate_building_label(room["building_label"], lang)
@@ -467,12 +486,14 @@ def render_page(selected_start, room_query, lang):
         full_steps = [
             text["from_prefix"].format(start=start_label),
             text["to_prefix"].format(building=building_label),
-            *room["steps"],
         ]
+        route_point_ids = find_path(start.get("point", selected_start), room["point"])
+        full_steps.extend(build_route_step_text(route_point_ids, room, lang))
         title = room["name"]
         summary = f"{room['name']} - {building_label} - {floor_label}. {room['summary']}"
         steps = render_steps(full_steps)
-        route_lines = render_route_lines(build_route_segments(start["coords"], room["coords"]))
+        route_lines = render_route_lines(build_route_segments(route_point_ids, room["coords"]))
+        route_debug = render_route_debug(route_point_ids)
     elif room_query:
         title = text["not_found_title"]
         summary = text["not_found_summary"]
@@ -495,8 +516,8 @@ def render_page(selected_start, room_query, lang):
         <p class="eyebrow">{text["eyebrow"]}</p>
         <h1>{text["hero_title"]}</h1>
         <div class="hero__stats">
-          <div><strong>3</strong><span>{text["hero_stat_1"]}</span></div>
-          <div><strong>9</strong><span>{text["hero_stat_2"]}</span></div>
+          <div><strong>1</strong><span>{text["hero_stat_1"]}</span></div>
+          <div><strong>{len(ROOMS)}</strong><span>{text["hero_stat_2"]}</span></div>
           <div><strong>Python</strong><span>{text["hero_stat_3"]}</span></div>
         </div>
         <a class="language-link" href="/">{text["language_switch"]}</a>
@@ -553,7 +574,7 @@ def render_page(selected_start, room_query, lang):
         </div>
 
         <div class="campus-map">
-          <img class="floor-plan" src="/parter.png" alt="Harta parterului">
+          <img class="floor-plan" src="/etaj-site.png" alt="Harta etajului 1 pentru site">
           <div class="map-route">{route_lines}</div>
         </div>
       </section>
@@ -568,6 +589,7 @@ def render_page(selected_start, room_query, lang):
           </div>
 
           <div class="route-summary">{escape(summary)}</div>
+          <div class="route-debug">{escape(route_debug)}</div>
           <ol class="steps">{steps}</ol>
         </section>
 
@@ -599,7 +621,7 @@ def app(environ, start_response):
         start_response("200 OK", [("Content-Type", "text/css; charset=utf-8")])
         return [css]
 
-    if path == "/parter.png":
+    if path == "/etaj-site.png":
         image = FLOOR_PLAN_PATH.read_bytes()
         start_response("200 OK", [("Content-Type", "image/png")])
         return [image]
