@@ -17,6 +17,7 @@ POINTS = {
     "P1": {"x": 2276.9, "y": 3745.6},
     "P2": {"x": 827.5, "y": 3745.6},
     "P3": {"x": 3735.3, "y": 3745.6},
+    "P1-3":{"x": 2900,"y": 3745.6},
     "P4": {"x": 2322.6, "y": 2392.1},
     "P5": {"x": 3735.3, "y": 3047.3},
     "P6": {"x": 3735.3, "y": 2392.1},
@@ -37,6 +38,7 @@ POINTS = {
     "P21": {"x": 640.1, "y": 3064.3},
     "P22": {"x": 3950.2, "y": 3047.3},
     "P23": {"x": 2279.3 , "y": 949},
+    "P27" : {"x": 827.5, "y" : 3400}
 
 }
 
@@ -66,13 +68,13 @@ POINTS_ETAJ_2 = {
 }
 
 GRAPH = {
-    "P1": ["P2", "P3", "P4"],
-    "P2": ["P1", "P7"],
-    "P3": ["P1", "P5"],
+    "P1": ["P2", "P3", "P4","P1-3"],
+    "P2": ["P1", "P7","P27"],
+    "P3": ["P1", "P5","P1-3"],
     "P4": ["P1", "P9", "P10"],
     "P5": ["P3", "P6", "P22"],
     "P6": ["P5", "P10", "P11"],
-    "P7": ["P2", "P8", "P21"],
+    "P7": ["P2", "P8", "P21","P27"],
     "P8": ["P7", "P9", "P15"],
     "P9": ["P8", "P4"],
     "P10": ["P4", "P6"],
@@ -89,6 +91,7 @@ GRAPH = {
     "P21": ["P7"],
     "P22": ["P5"],
     "P23" : ["P13", "P17"],
+    "P1-3": ["P1","P3"]
 
 }
 
@@ -115,6 +118,7 @@ GRAPH_ETAJ_2 = {
     "P89": ["P8","P9"],
     "P12-13":["P12","P13"],
     "P78" : ["P7","P8"]
+    
 }
 
 START_POINTS = {
@@ -124,9 +128,9 @@ START_POINTS = {
 }
 
 ROOMS = [
-  {"id": "207", "name": "207", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P2", "coords": {"x": 765.0, "y": 3761.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
-  {"id": "208", "name": "208", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P2", "coords": {"x": 767.0, "y": 3640.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
-  {"id": "209", "name": "209", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P2", "coords": {"x": 771.0, "y": 3501.0}, "summary": "Sala de pe coloana stanga, deasupra lui 208.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
+  {"id": "207", "name": "207", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P27", "coords": {"x": 765.0, "y": 3761.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
+  {"id": "208", "name": "208", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P27", "coords": {"x": 767.0, "y": 3640.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
+  {"id": "209", "name": "209", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P27", "coords": {"x": 771.0, "y": 3501.0}, "summary": "Sala de pe coloana stanga, deasupra lui 208.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "210", "name": "210", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P8", "coords": {"x": 756.0, "y": 2900.0}, "summary": "Sala de pe coloana stanga, aproape de intrarea Teatru.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "211", "name": "211", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P8", "coords": {"x": 727.0, "y": 2644.0}, "summary": "Sala de pe coloana stanga, deasupra lui 210.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
 
@@ -160,7 +164,7 @@ ROOMS = [
   {"id": "232A", "name": "232A", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P17", "coords": {"x": 2024.0, "y": 589.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "232B", "name": "232B", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P17", "coords": {"x": 2625.0, "y": 592.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
 
-  {"id": "233a", "name": "233A", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P14", "coords": {"x": 2587.0, "y": 1559.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
+  {"id": "233a", "name": "233A", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 2587.0, "y": 1559.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "233b", "name": "233B", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 3091.0, "y": 1565.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "234", "name": "234", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 3275.0, "y": 1568.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "235", "name": "235", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P12", "coords": {"x": 3457.0, "y": 1563.0}, "summary": "Sala de pe coloana stanga inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
@@ -184,9 +188,9 @@ ROOMS = [
   {"id": "256", "name": "256", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3792.0, "y": 3633.0}, "summary": "Sala de pe coloana dreapta inferioara.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "257", "name": "257", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3790.0, "y": 3754.0}, "summary": "Sala din capatul din dreapta jos al etajului.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "258", "name": "258", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3456.4, "y": 3322.7}, "summary": "Sala din zona 258, langa nucleul din dreapta jos.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
-  {"id": "259", "name": "259", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3474.7, "y": 3169.7}, "summary": "Sala din zona 259, aproape de P3.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
-  {"id": "260", "name": "260", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3296.4, "y": 3279.0}, "summary": "Sala din zona 260, aproape de 261.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
-  {"id": "261", "name": "261", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3190.0, "y": 3535.0}, "summary": "Sala din zona 261, aproape de coridorul inferior.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
+  {"id": "259", "name": "259", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P1-3", "coords": {"x": 3414.7, "y": 3689.7}, "summary": "Sala din zona 259, aproape de P3.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
+  {"id": "260", "name": "260", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P1-3", "coords": {"x": 3416.4, "y": 3679.0}, "summary": "Sala din zona 260, aproape de 261.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
+  {"id": "261", "name": "261", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P1-3", "coords": {"x": 3030.0, "y": 3611.0}, "summary": "Sala din zona 261, aproape de coridorul inferior.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "262", "name": "262", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3223.3, "y": 3252.8}, "summary": "Sala din zona nucleului inferior drept.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
   {"id": "263", "name": "263", "building_label": "Facultatea de Horticultura", "floor": "Etajul 1", "point": "P3", "coords": {"x": 3374.1, "y": 3270.3}, "summary": "Sala din zona nucleului inferior drept.", "stairs": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]},
 
