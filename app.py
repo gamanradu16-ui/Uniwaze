@@ -710,8 +710,8 @@ ROOMS = [
     "stairs": []
   },
   {
-    "id": "135",
-    "name": "135",
+    "id": "136",
+    "name": "136",
     "building_label": "Facultatea de Horticultura",
     "floor": "Etajul 0",
     "point": "P12",
@@ -4564,7 +4564,7 @@ ETAJE = {
             "S1": {"points": ["P3"], "coords": {"x": 585.0, "y": 3301.0}},
             "S2": {"points": ["P18"], "coords": {"x": 3664.0, "y": 3320.0}},
             "S4": {"points": ["P13"], "coords": {"x": 3420.0, "y": 835.0}},
-            "S5": {"points": ["P12"], "coords": {"x": 2893.0, "y": 430.0}},
+            "S5": {"points": ["P12"], "coords": {"x": 2793.0, "y": 616.0}},
             "S6": {"points": ["P15"], "coords": {"x": 1650.0, "y": 430.0}},
             "S7": {"points": ["P8"], "coords": {"x": 1830.0, "y": 1870.0}},
             "S8": {"points": ["P9"], "coords": {"x": 2460.0, "y": 1860.0}},
@@ -4716,7 +4716,7 @@ TEXT = {
         "html_lang": "ro",
         "app_title": "UniWay Craiova",
         "eyebrow": "Navigare universitara",
-        "hero_title": "Gaseste rapid sala pe etajul hartii tale.",
+        "hero_title": "Gaseste-ti rapid sala",
         "hero_stat_1": "harta reala",
         "hero_stat_2": "sali incluse",
         "hero_stat_3": "server-side",
@@ -4761,7 +4761,7 @@ TEXT = {
         "eyebrow": "Campus navigation",
         "hero_title": "Find your classroom on your real floor plan.",
         "hero_stat_1": "real map",
-        "hero_stat_2": "NORMALIZED_ROOMS included",
+        "hero_stat_2": "Rooms included",
         "hero_stat_3": "server-side",
         "planner_label": "Route planner",
         "planner_title": "Where do you want to go?",
@@ -5072,7 +5072,7 @@ def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=No
     if point_ids and final_coords:
         destination = clamp_coords(final_coords, floor_id)
         last_point = floor_points[point_ids[-1]]
-        
+        print(point_ids)
         if len(point_ids) == 2:
             
 
@@ -5111,7 +5111,6 @@ def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=No
                 return segments
                 
             else:
-                
                 segments.pop(0)
                 m_point ={
                     "x" : clamped_start["x"],
@@ -5738,10 +5737,14 @@ def render_you_are_here_marker(point_id, floor_id=DEFAULT_FLOOR_ID):
     if point_id not in floor_points:
         return ""
 
-    coords = floor_points[point_id]
+    return render_you_are_here_marker_coords(floor_points[point_id])
+
+
+def render_you_are_here_marker_coords(coords):
     label = "Te afli aici / You are here"
     return """
     <div class="you-are-here" style="left: {x}px; top: {y}px;">
+      <div class="you-are-here__dot"></div>
       <div class="you-are-here__arrow"></div>
       <div class="you-are-here__label">{label}</div>
     </div>
@@ -5891,7 +5894,10 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
         title = text["not_found_title"]
         summary = text["not_found_summary"]
 
-    start_marker = render_you_are_here_marker(start_marker_point_id, active_floor_id)
+    if target_option and active_stage_index == 0 and start_option.get("floor_id", DEFAULT_FLOOR_ID) == active_floor_id:
+        start_marker = render_you_are_here_marker_coords(start_option["coords"])
+    else:
+        start_marker = render_you_are_here_marker(start_marker_point_id, active_floor_id)
 
     html = f"""<!DOCTYPE html>
 <html lang="{text["html_lang"]}">
@@ -5966,25 +5972,6 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
         </div>
       </section>
 
-      <aside class="info-panel">
-        <section class="route-panel">
-          <div class="section-head section-head--compact">
-            <div>
-              <p class="section-tag">{text["route_tag"]}</p>
-              <h2>{escape(title)}</h2>
-            </div>
-          </div>
-
-          <div class="route-summary">{escape(summary)}</div>
-          <div class="level-summary"><strong>{text["level_tag"]}:</strong> {escape(level_summary)}</div>
-          <ol class="steps">{steps}</ol>
-          <div class="trace-block">
-            <p class="section-tag">{text["trace_tag"]}</p>
-            <ol class="steps steps--trace">{route_trace}</ol>
-          </div>
-        </section>
-
-      </aside>
     </main>
   </div>
 </body>
