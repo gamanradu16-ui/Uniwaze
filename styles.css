@@ -326,6 +326,13 @@ select {
   background: rgba(45, 143, 120, 0.12);
 }
 
+.floor-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .campus-map {
   position: relative;
   width: 100%;
@@ -499,6 +506,16 @@ select {
   line-height: 1.5;
 }
 
+.level-summary {
+  margin-bottom: 16px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: rgba(45, 143, 120, 0.12);
+  color: var(--signal);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .route-debug {
   margin-bottom: 16px;
   padding: 12px 14px;
@@ -523,6 +540,14 @@ select {
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.62);
   line-height: 1.5;
+}
+
+.trace-block {
+  margin-top: 18px;
+}
+
+.steps--trace li {
+  background: rgba(45, 143, 120, 0.08);
 }
 
 .room-grid {
