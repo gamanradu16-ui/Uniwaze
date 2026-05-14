@@ -234,6 +234,11 @@ select {
   gap: 16px;
 }
 
+.route-actions {
+  display: grid;
+  gap: 12px;
+}
+
 .field {
   display: grid;
   gap: 8px;
@@ -275,6 +280,11 @@ select {
 .cta:hover,
 .cta:focus-visible {
   transform: translateY(-2px);
+}
+
+.cta--secondary {
+  background: linear-gradient(135deg, #2d8f78, #1b5e54);
+  box-shadow: 0 16px 30px rgba(27, 94, 84, 0.22);
 }
 
 .quick-rooms {
