@@ -710,8 +710,8 @@ ROOMS = [
     "stairs": []
   },
   {
-    "id": "135",
-    "name": "135",
+    "id": "136",
+    "name": "136",
     "building_label": "Facultatea de Horticultura",
     "floor": "Etajul 0",
     "point": "P12",
@@ -4413,6 +4413,90 @@ ROOMS = [
   }
 ]
 
+RESTROOMS = [
+  {
+    "id": "wc-f-1",
+    "label": "Baie fete hol stanga",
+    "floor": "Etajul 1",
+    "floor_id": "etaj-1",
+    "point": "P18",
+    "coords": {"x": 1180.0, "y": 557.0},
+    "type": "female"
+  },
+  {
+    "id": "wc-u-1",
+    "label": "Baie unisex parter centru",
+    "floor": "Etajul 1",
+    "floor_id": "etaj-1",
+    "point": "P8",
+    "coords": {"x": 751.0, "y": 2400.0},
+    "type": "unisex"
+  },
+  {
+    "id": "wc-m-1",
+    "label": "Baie baieti hol dreapta",
+    "floor": "Etajul 1",
+    "floor_id": "etaj-1",
+    "point": "P11",
+    "coords": {"x": 3630.0, "y": 1700.0},
+    "type": "male"
+  },
+  {
+    "id": "wc-u-2",
+    "label": "Baie unisex parter centru",
+    "floor": "Etajul 1",
+    "floor_id": "etaj-1",
+    "point": "P20",
+    "coords": {"x": 3400.0, "y": 563.0},
+    "type": "unisex"
+  },
+  {
+    "id": "wc-u-3",
+    "label": "Baie unisex parter centru",
+    "floor": "Etajul 2",
+    "floor_id": "etaj-2",
+    "point": "P10",
+    "coords": {"x": 3460.0, "y": 1810.0},
+    "type": "unisex"
+  },
+  {
+    "id": "wc-f-2",
+    "label": "Baie fete hol stanga",
+    "floor": "Etajul 2",
+    "floor_id": "etaj-2",
+    "point": "P8",
+    "coords": {"x": 833.0, "y": 1800.0},
+    "type": "female"
+  },
+  {
+    "id": "wc-u-4",
+    "label": "Baie unisex parter centru",
+    "floor": "Etajul 2",
+    "floor_id": "etaj-2",
+    "point": "P13",
+    "coords": {"x": 3220.0, "y": 755.0},
+    "type": "unisex"
+  },
+  {
+    "id": "wc-u-5",
+    "label": "Baie unisex parter centru",
+    "floor": "Etajul 2",
+    "floor_id": "etaj-2",
+    "point": "P4",
+    "coords": {"x": 673.0, "y": 2450.0},
+    "type": "unisex"
+  },
+  {
+    "id": "wc-u-6",
+    "label": "Baie unisex parter centru",
+    "floor": "Etajul 2",
+    "floor_id": "etaj-2",
+    "point": "P17",
+    "coords": {"x": 3590.0, "y": 2450.0},
+    "type": "unisex"
+  }
+]
+
 def normalize_point_list(raw_points):
     point_aliases = {
         "p1": "P1",
@@ -4564,7 +4648,7 @@ ETAJE = {
             "S1": {"points": ["P3"], "coords": {"x": 585.0, "y": 3301.0}},
             "S2": {"points": ["P18"], "coords": {"x": 3664.0, "y": 3320.0}},
             "S4": {"points": ["P13"], "coords": {"x": 3420.0, "y": 835.0}},
-            "S5": {"points": ["P12"], "coords": {"x": 2893.0, "y": 430.0}},
+            "S5": {"points": ["P12"], "coords": {"x": 2793.0, "y": 616.0}},
             "S6": {"points": ["P15"], "coords": {"x": 1650.0, "y": 430.0}},
             "S7": {"points": ["P8"], "coords": {"x": 1830.0, "y": 1870.0}},
             "S8": {"points": ["P9"], "coords": {"x": 2460.0, "y": 1860.0}},
@@ -4716,7 +4800,7 @@ TEXT = {
         "html_lang": "ro",
         "app_title": "UniWay Craiova",
         "eyebrow": "Navigare universitara",
-        "hero_title": "Gaseste rapid sala pe etajul hartii tale.",
+        "hero_title": "Gaseste-ti rapid sala",
         "hero_stat_1": "harta reala",
         "hero_stat_2": "sali incluse",
         "hero_stat_3": "server-side",
@@ -4725,6 +4809,8 @@ TEXT = {
         "start_label": "Punct de plecare",
         "target_label": "Destinatie",
         "submit": "Arata traseul",
+        "restroom_female": "Baie fete",
+        "restroom_male": "Baie baieti",
         "quick_rooms": "Sugestii sali",
         "map_tag": "Harta campus",
         "map_title": "Traseu real pe etaj",
@@ -4761,13 +4847,15 @@ TEXT = {
         "eyebrow": "Campus navigation",
         "hero_title": "Find your classroom on your real floor plan.",
         "hero_stat_1": "real map",
-        "hero_stat_2": "NORMALIZED_ROOMS included",
+        "hero_stat_2": "Rooms included",
         "hero_stat_3": "server-side",
         "planner_label": "Route planner",
         "planner_title": "Where do you want to go?",
         "start_label": "Starting point",
         "target_label": "Destination",
         "submit": "Show route",
+        "restroom_female": "Women's restroom",
+        "restroom_male": "Men's restroom",
         "quick_rooms": "Suggested NORMALIZED_ROOMS",
         "map_tag": "Campus map",
         "map_title": "Real route across the floor",
@@ -4844,10 +4932,78 @@ def get_start_point_option(key, lang):
     }
 
 
-def resolve_target_option(selected_target, lang):
+def restroom_target_points(restroom):
+    floor_points = get_floor_points(restroom["floor_id"])
+    return [point_id for point_id in normalize_point_list(restroom.get("point")) if point_id in floor_points]
+
+
+def restroom_matches(restroom, requested_type):
+    if requested_type == "female":
+        return restroom["type"] in {"female", "unisex"}
+    if requested_type == "male":
+        return restroom["type"] in {"male", "unisex"}
+    return restroom["type"] == requested_type
+
+
+def route_cost(route_node_ids):
+    if len(route_node_ids) < 2:
+        return 0.0
+    combined_points, _ = build_combined_graph()
+    total = 0.0
+    for index in range(len(route_node_ids) - 1):
+        total += node_distance(route_node_ids[index], route_node_ids[index + 1], combined_points)
+    return total
+
+
+def find_best_restroom(start_option, restroom_type, lang):
+    best_option = None
+    best_route = None
+    best_cost = None
+
+    for index, restroom in enumerate(RESTROOMS):
+        if not restroom_matches(restroom, restroom_type):
+            continue
+        points = restroom_target_points(restroom)
+        if not points:
+            continue
+
+        route_node_ids, _ = find_best_target_path(
+            start_option["points"],
+            points,
+            start_option.get("floor_id", DEFAULT_FLOOR_ID),
+            restroom["floor_id"],
+        )
+        if not route_node_ids:
+            continue
+
+        cost = route_cost(route_node_ids)
+        if best_cost is None or cost < best_cost:
+            best_cost = cost
+            best_route = route_node_ids
+            best_option = {
+                "id": f'{restroom["id"]}-{index}',
+                "type": "restroom",
+                "label": restroom["label"],
+                "name": restroom["label"],
+                "floor": restroom["floor"],
+                "floor_id": restroom["floor_id"],
+                "points": points,
+                "coords": restroom["coords"],
+                "restroom": restroom,
+                "route": best_route,
+            }
+
+    return best_option
+
+
+def resolve_target_option(selected_target, lang, start_option=None):
     selected_target = (selected_target or "").strip()
     if not selected_target:
         return None
+
+    if selected_target.startswith("restroom:") and start_option:
+        restroom_type = selected_target.split(":", 1)[1]
+        return find_best_restroom(start_option, restroom_type, lang)
 
     room = get_room(selected_target)
     if room:
@@ -5072,7 +5228,7 @@ def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=No
     if point_ids and final_coords:
         destination = clamp_coords(final_coords, floor_id)
         last_point = floor_points[point_ids[-1]]
-        
+        print(point_ids)
         if len(point_ids) == 2:
             
 
@@ -5111,7 +5267,6 @@ def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=No
                 return segments
                 
             else:
-                
                 segments.pop(0)
                 m_point ={
                     "x" : clamped_start["x"],
@@ -5738,10 +5893,14 @@ def render_you_are_here_marker(point_id, floor_id=DEFAULT_FLOOR_ID):
     if point_id not in floor_points:
         return ""
 
-    coords = floor_points[point_id]
+    return render_you_are_here_marker_coords(floor_points[point_id])
+
+
+def render_you_are_here_marker_coords(coords):
     label = "Te afli aici / You are here"
     return """
     <div class="you-are-here" style="left: {x}px; top: {y}px;">
+      <div class="you-are-here__dot"></div>
       <div class="you-are-here__arrow"></div>
       <div class="you-are-here__label">{label}</div>
     </div>
@@ -5790,9 +5949,9 @@ def render_language_page():
 
 def render_page(selected_start, target_query, lang, view_floor_id=None, view_stage=None):
     text = t(lang)
-    target_option = resolve_target_option(target_query, lang)
-    room = target_option.get("room") if target_option and target_option["type"] == "room" else None
     start_option = resolve_start_option(selected_start, lang)
+    target_option = resolve_target_option(target_query, lang, start_option)
+    room = target_option.get("room") if target_option and target_option["type"] == "room" else None
     active_floor_id = target_option["floor_id"] if target_option else start_option.get("floor_id", DEFAULT_FLOOR_ID)
     floor_config = get_floor_config(active_floor_id)
     selected_start = start_option["id"]
@@ -5815,12 +5974,16 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
             text["to_prefix"].format(building=target_option["building_label"]) if target_option["type"] == "room"
             else text["to_entrance_prefix"].format(target=target_option["label"]),
         ]
-        route_node_ids, target_node_id = find_best_target_path(
-            start_option["points"],
-            target_option["points"],
-            start_option.get("floor_id", DEFAULT_FLOOR_ID),
-            target_option["floor_id"],
-        )
+        if target_option["type"] == "restroom" and target_option.get("route"):
+            route_node_ids = target_option["route"]
+            target_node_id = route_node_ids[-1] if route_node_ids else None
+        else:
+            route_node_ids, target_node_id = find_best_target_path(
+                start_option["points"],
+                target_option["points"],
+                start_option.get("floor_id", DEFAULT_FLOOR_ID),
+                target_option["floor_id"],
+            )
         floor_stages = route_floor_stages(route_node_ids)
         active_stage_index = 0
         if floor_stages:
@@ -5891,7 +6054,10 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
         title = text["not_found_title"]
         summary = text["not_found_summary"]
 
-    start_marker = render_you_are_here_marker(start_marker_point_id, active_floor_id)
+    if target_option and active_stage_index == 0 and start_option.get("floor_id", DEFAULT_FLOOR_ID) == active_floor_id:
+        start_marker = render_you_are_here_marker_coords(start_option["coords"])
+    else:
+        start_marker = render_you_are_here_marker(start_marker_point_id, active_floor_id)
 
     html = f"""<!DOCTYPE html>
 <html lang="{text["html_lang"]}">
@@ -5940,7 +6106,11 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
             </select>
           </label>
 
-          <button type="submit" class="cta">{text["submit"]}</button>
+          <div class="route-actions">
+            <button type="submit" class="cta">{text["submit"]}</button>
+            <button type="submit" class="cta cta--secondary" name="restroom" value="female">{text["restroom_female"]}</button>
+            <button type="submit" class="cta cta--secondary" name="restroom" value="male">{text["restroom_male"]}</button>
+          </div>
         </form>
 
         <div class="quick-NORMALIZED_ROOMS" aria-label="{text["quick_rooms"]}">
@@ -5966,25 +6136,6 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
         </div>
       </section>
 
-      <aside class="info-panel">
-        <section class="route-panel">
-          <div class="section-head section-head--compact">
-            <div>
-              <p class="section-tag">{text["route_tag"]}</p>
-              <h2>{escape(title)}</h2>
-            </div>
-          </div>
-
-          <div class="route-summary">{escape(summary)}</div>
-          <div class="level-summary"><strong>{text["level_tag"]}:</strong> {escape(level_summary)}</div>
-          <ol class="steps">{steps}</ol>
-          <div class="trace-block">
-            <p class="section-tag">{text["trace_tag"]}</p>
-            <ol class="steps steps--trace">{route_trace}</ol>
-          </div>
-        </section>
-
-      </aside>
     </main>
   </div>
 </body>
@@ -6004,7 +6155,13 @@ def app(environ, start_response):
         if path == floor_config["image_url"]:
             image = floor_config["image_path"].read_bytes()
             content_type = "image/tiff" if floor_config["image_path"].suffix.lower() in {".tif", ".tiff"} else "image/png"
-            start_response("200 OK", [("Content-Type", content_type)])
+            start_response(
+                "200 OK",
+                [
+                    ("Content-Type", content_type),
+                    ("Cache-Control", "public, max-age=31536000"),
+                ],
+            )
             return [image]
 
     if path != "/":
@@ -6014,7 +6171,8 @@ def app(environ, start_response):
     params = parse_qs(environ.get("QUERY_STRING", ""))
     lang = params.get("lang", [""])[0]
     selected_start = params.get("start", ["intrare-principala"])[0]
-    target_query = params.get("target", [""])[0] or params.get("room", [""])[0]
+    restroom_query = params.get("restroom", [""])[0]
+    target_query = f"restroom:{restroom_query}" if restroom_query else (params.get("target", [""])[0] or params.get("room", [""])[0])
     view_floor_id = params.get("view_floor", [""])[0] or None
     view_stage_raw = params.get("view_stage", [""])[0]
     view_stage = int(view_stage_raw) if view_stage_raw.isdigit() else None
