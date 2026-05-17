@@ -356,6 +356,10 @@ select {
   gap: 20px;
 }
 
+.site-footer__section {
+  min-width: 0;
+}
+
 .site-footer__text {
   margin: 0;
   color: var(--muted);
@@ -365,6 +369,11 @@ select {
 .site-footer__cta {
   flex-shrink: 0;
   text-decoration: none;
+}
+
+.project-meta--footer {
+  margin-top: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .map-card {
@@ -610,6 +619,10 @@ select {
   .site-footer__content {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .project-meta--footer {
+    grid-template-columns: 1fr;
   }
 
 }

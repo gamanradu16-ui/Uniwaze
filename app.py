@@ -41,7 +41,7 @@ POINTS = {
     "P18": {"x": 1728.4, "y": 513.0},
     "P19": {"x": 2933.5, "y": 540.0},
     "P20": {"x": 3735.3, "y": 540.0},
-    "P21": {"x": 701.0, "y": 3074.3},
+    "P21": {"x": 701.0, "y": 3064.3},
     "P22": {"x": 3950.2, "y": 3047.3},
     "P23": {"x": 2279.3 , "y": 949},
     "P27" : {"x": 827.5, "y" : 3400},
@@ -238,7 +238,7 @@ GRAPH_ETAJ_3 = {
     "P6": ["P5","P7","P6-7"],
     "P7": ["P6","P9","P6-7"],
     "P8": ["P10", "P9"],
-    "P9": ["P8","P9-15"],
+    "P9": ["P8","P9-15","P15"],
     "P10": ["P8","P11","P10-13"],
     "P11": ["P11-12","P10","P1-11"],
     "P12": ["P11-12","P13"],
@@ -268,7 +268,7 @@ POINTS_ETAJ_3 = {
     "P5": {"x": 3500, "y": 3810},
     "P6": {"x": 3500, "y": 3290},
     "P7": {"x": 3500, "y": 2450},
-    "P8": {"x": 2081, "y": 2450},
+    "P8": {"x": 2100, "y": 2450},
     "P9": {"x": 2399, "y": 2450},
     "P10": {"x": 1751, "y": 2450},
     "P11": {"x": 625, "y": 2450},
@@ -410,8 +410,8 @@ ETAJE = {
         "level": 1,
         "label_ro": "Etajul 1",
         "label_en": "1st floor",
-        "image_path": Path(__file__).with_name("etaj-0-bun.png"),
-        "image_url": "/etaj-0-bun.png",
+        "image_path": Path(__file__).with_name("etaj-0-bun.webp"),
+        "image_url": "/etaj-0-bun.webp",
         "width": MAP_WIDTH,
         "height": MAP_HEIGHT,
         "points": POINTS,
@@ -433,8 +433,8 @@ ETAJE = {
         "level": 2,
         "label_ro": "Etajul 2",
         "label_en": "2nd floor",
-        "image_path": Path(__file__).with_name("etaj-2-clean.png"),
-        "image_url": "/etaj-2-clean.png",
+        "image_path": Path(__file__).with_name("etaj-2-clean.webp"),
+        "image_url": "/etaj-2-clean.webp",
         "width": 4409,
         "height": 4416,
         "points": POINTS_ETAJ_2,
@@ -454,8 +454,8 @@ ETAJE = {
         "level": 0,
         "label_ro": "Etajul 0",
         "label_en": "Ground floor",
-        "image_path": Path(__file__).with_name("etaj 0- original.png"),
-        "image_url": "/etaj 0- original.png",
+        "image_path": Path(__file__).with_name("etaj 0- original.webp"),
+        "image_url": "/etaj 0- original.webp",
         "width": 4754,
         "height": 4480,
         "points": POINTS_ETAJ_0,
@@ -475,8 +475,8 @@ ETAJE = {
         "level": 3,
         "label_ro": "Etajul 3",
         "label_en": "Third floor",
-        "image_path": Path(__file__).with_name("etaj 3 bun.png"),
-        "image_url": "/etaj 3 bun.png",
+        "image_path": Path(__file__).with_name("etaj 3 bun.webp"),
+        "image_url": "/etaj 3 bun.webp",
         "width": 4306,
         "height": 4412,
         "points": POINTS_ETAJ_3,
@@ -497,8 +497,8 @@ ETAJE = {
         "level": 4,
         "label_ro": "Etajul 4",
         "label_en": "Fourth floor",
-        "image_path": Path(__file__).with_name("etaj final.png"),
-        "image_url": "/etaj final.png",
+        "image_path": Path(__file__).with_name("etaj final.webp"),
+        "image_url": "/etaj final.webp",
         "width": 4409,
         "height": 4304,
         "points": POINTS_ETAJ_4,
@@ -515,8 +515,8 @@ ETAJE = {
         "level": -1,
         "label_ro": "Subsol",
         "label_en": "Basement",
-        "image_path": Path(__file__).with_name("etaj -1.png"),
-        "image_url": "/etaj -1.png",
+        "image_path": Path(__file__).with_name("etaj -1.webp"),
+        "image_url": "/etaj -1.webp",
         "width": 4205,
         "height": 4396,
         "points": POINTS_ETAJ_SUBSOL,
@@ -1706,16 +1706,6 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
           <div><strong>{len(NORMALIZED_ROOMS)}</strong><span>{text["hero_stat_2"]}</span></div>
           <div><strong>Python</strong><span>{text["hero_stat_3"]}</span></div>
         </div>
-        <div class="project-meta">
-          <div class="project-meta__block">
-            <span class="project-meta__label">{text["creator_label"]}</span>
-            <strong>{escape(CREATOR_NAME)}</strong>
-          </div>
-          <div class="project-meta__block">
-            <span class="project-meta__label">{text["coordinators_label"]}</span>
-            <strong>{escape(", ".join(COORDINATING_TEACHERS))}</strong>
-          </div>
-        </div>
         <a class="language-link" href="/">{text["language_switch"]}</a>
       </div>
 
@@ -1791,11 +1781,21 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
     </main>
     <footer class="site-footer">
       <div class="site-footer__content">
-        <div>
+        <div class="site-footer__section">
           <p class="section-tag">{text["report_issue"]}</p>
           <p class="site-footer__text">{text["report_issue_text"]}</p>
         </div>
         <a class="cta site-footer__cta" href="{escape(REPORT_ISSUE_URL)}" target="_blank" rel="noopener noreferrer">{text["report_issue_cta"]}</a>
+      </div>
+      <div class="project-meta project-meta--footer">
+        <div class="project-meta__block">
+          <span class="project-meta__label">{text["creator_label"]}</span>
+          <strong>{escape(CREATOR_NAME)}</strong>
+        </div>
+        <div class="project-meta__block">
+          <span class="project-meta__label">{text["coordinators_label"]}</span>
+          <strong>{escape(", ".join(COORDINATING_TEACHERS))}</strong>
+        </div>
       </div>
     </footer>
   </div>
@@ -1816,7 +1816,13 @@ def app(environ, start_response):
     for floor_config in FLOOR_CONFIGS.values():
         if path == floor_config["image_url"]:
             image = floor_config["image_path"].read_bytes()
-            content_type = "image/tiff" if floor_config["image_path"].suffix.lower() in {".tif", ".tiff"} else "image/png"
+            suffix = floor_config["image_path"].suffix.lower()
+            if suffix in {".tif", ".tiff"}:
+                content_type = "image/tiff"
+            elif suffix == ".webp":
+                content_type = "image/webp"
+            else:
+                content_type = "image/png"
             start_response(
                 "200 OK",
                 [
