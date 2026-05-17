@@ -420,7 +420,7 @@ ETAJE = {
             "S1": {"points": ["P21"], "coords": {"x": 701.0, "y": 3241.0}},
             "S2": {"points": ["P22"], "coords": {"x": 3954.0, "y": 3130.0}},
             "S3": {"points": ["P4"], "coords": {"x": 2297.0, "y": 2240.0}},
-            "S4": {"points": ["P20"], "coords": {"x": 3600.0, "y": 570.0}},
+           
             "S5": {"points": ["P19"], "coords": {"x": 2893.0, "y": 430.0}},
             "S6": {"points": ["P18"], "coords": {"x": 1650.0, "y": 430.0}},
             "S7": {"points": ["P14"], "coords": {"x": 1950.0, "y": 1700.0}},
@@ -442,7 +442,7 @@ ETAJE = {
         "stairs": {
             "S1": {"points": ["P3"], "coords": {"x": 585.0, "y": 3301.0}},
             "S2": {"points": ["P18"], "coords": {"x": 3664.0, "y": 3320.0}},
-            "S4": {"points": ["P13"], "coords": {"x": 3420.0, "y": 835.0}},
+            
             "S5": {"points": ["P12"], "coords": {"x": 2793.0, "y": 616.0}},
             "S6": {"points": ["P15"], "coords": {"x": 1650.0, "y": 430.0}},
             "S7": {"points": ["P8"], "coords": {"x": 1830.0, "y": 1870.0}},
@@ -463,7 +463,7 @@ ETAJE = {
         "stairs": {
             "S1": {"points": ["P1"], "coords": {"x": 1075.0, "y": 3301.0}},
             "S2": {"points": ["P6"], "coords": {"x": 4134.0, "y": 3320.0}},
-            "S4": {"points": ["P17"], "coords": {"x": 3900.0, "y": 872.0}},
+            
             "S5": {"points": ["P16"], "coords": {"x": 3223.0, "y": 710.0}},
             "S6": {"points": ["P18"], "coords": {"x": 2020.0, "y": 668.0}},
             "S7": {"points": ["P13"], "coords": {"x": 2300.0, "y": 1920.0}},
@@ -485,7 +485,7 @@ ETAJE = {
             "S1": {"points": ["P1"], "coords": {"x": 463, "y": 3321}},
             "S2": {"points": ["P6"], "coords": {"x": 3690.0, "y": 3330.0}},
             "S3": {"points" : ["P8"], "coords" : {"x" :2060, "y":1920}},
-            "S4": {"points": ["P18"], "coords": {"x": 3450.0, "y": 641.0}},
+          
             "S5": {"points": ["P17"], "coords": {"x": 2630.0, "y": 573.0}},
             "S6": {"points": ["P19"], "coords": {"x": 1450.0, "y": 583.0}},
             "S7": {"points": ["P13"], "coords": {"x": 1750.0, "y": 1870.0}},
@@ -916,13 +916,17 @@ def build_combined_graph():
 
     return combined_points, combined_graph
 
-
+FLOOR_CHANGE_PENALTY = 1200.0
 def node_distance(node_a, node_b, combined_points):
-    # Mișcarea între etaje are cost fix; pe același etaj costul este distanța geometrică.
     floor_a, _ = split_node_key(node_a)
     floor_b, _ = split_node_key(node_b)
+
     if floor_a != floor_b:
-        return STAIR_TRAVEL_COST
+        level_a = get_floor_level(floor_a)
+        level_b = get_floor_level(floor_b)
+        level_difference = abs(level_b - level_a)
+        return FLOOR_CHANGE_PENALTY + STAIR_TRAVEL_COST * level_difference
+
     return distance(combined_points[node_a], combined_points[node_b])
 
 
