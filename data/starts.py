@@ -7,13 +7,13 @@ START_POINTS = {
     },
     "intrare-teatru": {
         "label": "Intrare Teatru",
-        "coords": {"x": 375.5, "y": 3024.3},
+        "coords": {"x": 355.5, "y": 3074.3},
         "point": "P21",
         "floor_id": "etaj-1",
     },
     "intrare-parcare": {
         "label": "Intrare Parcare",
-        "coords": {"x": 4269.1, "y": 3024.3},
+        "coords": {"x": 4365, "y": 3047.3},
         "point": "P22",
         "floor_id": "etaj-1",
     },

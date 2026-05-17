@@ -41,17 +41,18 @@ POINTS = {
     "P18": {"x": 1728.4, "y": 513.0},
     "P19": {"x": 2933.5, "y": 540.0},
     "P20": {"x": 3735.3, "y": 540.0},
-    "P21": {"x": 640.1, "y": 3064.3},
+    "P21": {"x": 701.0, "y": 3074.3},
     "P22": {"x": 3950.2, "y": 3047.3},
     "P23": {"x": 2279.3 , "y": 949},
     "P27" : {"x": 827.5, "y" : 3400},
     "P6-11": {"x":3735.3, "y" :2000},
-    "P14-15": {"x": 1300, "y": 1620}
+    "P14-15": {"x": 1300, "y": 1620},
+    "P1-2" : {"x" : 1200, "y" :3745.6}
 }
 # Muchiile de navigație pentru etajul implicit. Aceste legături descriu coridoarele reale.
 GRAPH = {
-    "P1": ["P2", "P3", "P4","P1-3"],
-    "P2": ["P1", "P7","P27"],
+    "P1": ["P2", "P3", "P4","P1-3", "P1-2"],
+    "P2": ["P1", "P7","P27","P1-2"],
     "P3": ["P1", "P5","P1-3"],
     "P4": ["P1", "P9", "P10"],
     "P5": ["P3", "P6", "P22"],
@@ -76,7 +77,8 @@ GRAPH = {
     "P1-3": ["P1","P3"],
     "P6-11": ["P11","P6"],
     "P27" : ["P2","P7"],
-    "P14-15":["P14","P15"]
+    "P14-15":["P14","P15"],
+    "P1-2": ["P1", "P2"]
 
 }
 
@@ -244,15 +246,17 @@ GRAPH_ETAJ_3 = {
     "P14": ["P13","P15"],
     "P15": ["P14","P16"],
     "P16": ["P15"],
-    "P17": ["P18"],
-    "P18": [ "P17"],
+    "P17": ["P18","P17-18"],
+    "P18": [ "P17","P17-18"],
     "P19": ["P20"],
     "P20": ["P19"],
     "P1-11": ["P1","P11"],
     "P6-7": ["P6","P7"],
     "P10-13":["P10","P13"],
     "P9-15":["P9","P15"],
-    "P11-12":["P11","P12"]
+    "P11-12":["P11","P12"],
+    "P82" : ["P8"],
+    "P17-18": ["P17","P18"]
     
 }
 
@@ -282,7 +286,8 @@ POINTS_ETAJ_3 = {
     "P10-13":{"x":1751, "y": 2000},
     "P9-15": {"x":2399, "y": 2000},
     "P11-12":{"x":625,"y":2000},
-    
+    "P82": {"x": 1000, "y": 2450},
+    "P17-18":{"x" :3000 , "y" :641}
 }
 
 
@@ -413,7 +418,7 @@ ETAJE = {
         "graph": GRAPH,
         "stairs": {
             "S1": {"points": ["P21"], "coords": {"x": 701.0, "y": 3241.0}},
-            "S2": {"points": ["P22"], "coords": {"x": 3974.0, "y": 3130.0}},
+            "S2": {"points": ["P22"], "coords": {"x": 3954.0, "y": 3130.0}},
             "S3": {"points": ["P4"], "coords": {"x": 2297.0, "y": 2240.0}},
             "S4": {"points": ["P20"], "coords": {"x": 3600.0, "y": 570.0}},
             "S5": {"points": ["P19"], "coords": {"x": 2893.0, "y": 430.0}},
@@ -579,6 +584,12 @@ for room in NORMALIZED_ROOMS:
 
 STYLES_PATH = Path(__file__).with_name("styles.css")
 FLOOR_PLAN_PATH = Path(__file__).with_name("etaj-0-bun.png")
+CREATOR_NAME = "Gaman Mihnea Radu"
+COORDINATING_TEACHERS = [
+    "Smaranda Belciug",
+    "Florin Ispas",
+]
+REPORT_ISSUE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeJdTD1_xouC4_0FIWj9AR9RAaTYN1Vehtrb1hBIN71FotYag/viewform?usp=publish-editor"
 
 # Textele UI sunt ținute separat pentru a simplifica schimbările de limbă și etichete.
 TEXT = {
@@ -590,6 +601,8 @@ TEXT = {
         "hero_stat_1": "harta reala",
         "hero_stat_2": "sali incluse",
         "hero_stat_3": "server-side",
+        "creator_label": "Creator",
+        "coordinators_label": "Profesori coordonatori",
         "planner_label": "Planificator traseu",
         "planner_title": "Unde vrei sa ajungi?",
         "start_label": "Punct de plecare",
@@ -600,6 +613,13 @@ TEXT = {
         "quick_rooms": "Sugestii sali",
         "map_tag": "Harta campus",
         "map_title": "Traseu real pe etaj",
+        "legend_title": "Legenda",
+        "legend_route": "Linia portocalie arata traseul pe etajul curent.",
+        "legend_start": "Markerul rosu arata punctul de plecare.",
+        "legend_floor": "Butonul din dreapta sus te muta la urmatorul etaj din traseu.",
+        "report_issue": "Raporteaza o problema",
+        "report_issue_text": "Daca observi o eroare in traseu sau in datele salilor, trimite un mesaj aici.",
+        "report_issue_cta": "Deschide formularul",
         "next_floor": "Urca un etaj",
         "default_title": "Alege o sala",
         "not_found_title": "Sala nu a fost gasita",
@@ -624,6 +644,8 @@ TEXT = {
         "hero_stat_1": "real map",
         "hero_stat_2": "Rooms included",
         "hero_stat_3": "server-side",
+        "creator_label": "Creator",
+        "coordinators_label": "Coordinating teachers",
         "planner_label": "Route planner",
         "planner_title": "Where do you want to go?",
         "start_label": "Starting point",
@@ -634,6 +656,13 @@ TEXT = {
         "quick_rooms": "Suggested NORMALIZED_ROOMS",
         "map_tag": "Campus map",
         "map_title": "Real route across the floor",
+        "legend_title": "Legend",
+        "legend_route": "The orange line shows the route on the current floor.",
+        "legend_start": "The red marker shows the starting point.",
+        "legend_floor": "The top-right button moves you to the next floor in the route.",
+        "report_issue": "Report an issue",
+        "report_issue_text": "If you notice a route or room data error, send a message here.",
+        "report_issue_cta": "Open form",
         "next_floor": "Go up one floor",
         "default_title": "Choose a room",
         "not_found_title": "Room not found",
@@ -991,13 +1020,14 @@ def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=No
         segments.append(segment)
 
 
-    if point_ids and len(point_ids) == 1:
+    """if point_ids and len(point_ids) == 1:
         destination = clamp_coords(final_coords, floor_id)
         segment = calculate_line(clamped_start,destination)
         segment["class_name"] = "route-line"
         segments.pop()
         segments.append(segment)
-        return segments
+        return segments"""
+    print(point_ids)
     if point_ids and final_coords:
         destination = clamp_coords(final_coords, floor_id)
         last_point = floor_points[point_ids[-1]]
@@ -1676,6 +1706,16 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
           <div><strong>{len(NORMALIZED_ROOMS)}</strong><span>{text["hero_stat_2"]}</span></div>
           <div><strong>Python</strong><span>{text["hero_stat_3"]}</span></div>
         </div>
+        <div class="project-meta">
+          <div class="project-meta__block">
+            <span class="project-meta__label">{text["creator_label"]}</span>
+            <strong>{escape(CREATOR_NAME)}</strong>
+          </div>
+          <div class="project-meta__block">
+            <span class="project-meta__label">{text["coordinators_label"]}</span>
+            <strong>{escape(", ".join(COORDINATING_TEACHERS))}</strong>
+          </div>
+        </div>
         <a class="language-link" href="/">{text["language_switch"]}</a>
       </div>
 
@@ -1729,9 +1769,35 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
           <div class="map-route">{route_lines}</div>
           {start_marker}
         </div>
+        <div class="map-legend" aria-label="{text["legend_title"]}">
+          <p class="section-tag">{text["legend_title"]}</p>
+          <div class="map-legend__items">
+            <div class="map-legend__item">
+              <span class="map-legend__swatch map-legend__swatch--route"></span>
+              <span>{text["legend_route"]}</span>
+            </div>
+            <div class="map-legend__item">
+              <span class="map-legend__swatch map-legend__swatch--start"></span>
+              <span>{text["legend_start"]}</span>
+            </div>
+            <div class="map-legend__item">
+              <span class="map-legend__swatch map-legend__swatch--floor"></span>
+              <span>{text["legend_floor"]}</span>
+            </div>
+          </div>
+        </div>
       </section>
 
     </main>
+    <footer class="site-footer">
+      <div class="site-footer__content">
+        <div>
+          <p class="section-tag">{text["report_issue"]}</p>
+          <p class="site-footer__text">{text["report_issue_text"]}</p>
+        </div>
+        <a class="cta site-footer__cta" href="{escape(REPORT_ISSUE_URL)}" target="_blank" rel="noopener noreferrer">{text["report_issue_cta"]}</a>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
