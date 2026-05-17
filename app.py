@@ -3,7 +3,7 @@ from math import atan2, degrees, sqrt
 import os
 from pathlib import Path
 import ast
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, unquote
 from wsgiref.simple_server import make_server
 
 from data.restrooms import RESTROOMS
@@ -149,7 +149,10 @@ GRAPH_ETAJ_SUBSOL = {
     "P10": ["P9","P11"],
     "P11": ["P10"],
     "P12" :["P13"],
-    "P13":["P12"]
+    "P13":["P12"],
+    "P67" : ["P420"],
+    "P420" : ["P67","P69"],
+    "P69": ["P420"]
 
 }
 
@@ -166,14 +169,17 @@ POINTS_ETAJ_SUBSOL = {
     "P10":{"x":3445 ,"y": 661},
     "P11": {"x" :3445, "y": 1083},
     "P12": {"x": 2327, "y": 1663},
-    "P13": {"x": 2491, "y": 1663}
+    "P13": {"x": 2491, "y": 1663},
+    "P67" :{"x" : 1290 , "y": 3870},
+    "P420" : {"x" : 1560, "y" : 3870},
+    "P69" : {"x": 1560 , "y" : 3870}
 }
 
 
 GRAPH_ETAJ_0 = {
     "P1": ["P2","P9","P1-9"],
-    "P2": ["P1", "P3"],
-    "P3": ["P2"],
+    "P2": ["P1", "P3","P2-3"],
+    "P3": ["P2","P2-3"],
     "P4": [ "P5"],
     "P5": ["P4", "P6"],
     "P6": ["P5","P7","P6-7"],
@@ -196,7 +202,8 @@ GRAPH_ETAJ_0 = {
     "P7-10": ["P7","P10"],
     "P10-11":["P10","P11"],
     "P16-17":["P16","P17"],
-    "P18-19":["P18","P19"]
+    "P18-19":["P18","P19"],
+    "P2-3":["P2", "P3"]
     
 }
 
@@ -226,7 +233,8 @@ POINTS_ETAJ_0 = {
     "P7-10": {"x":4011 , "y":2000},
     "P10-11":{"x": 4350, "y": 1808},
     "P16-17": {"x":3640,"y" :774},
-    "P18-19":{"x":1560 ,"y": 752}
+    "P18-19":{"x":1560 ,"y": 752},
+    "P2-3":{ "x" :1880, "y": 3784}
 }
 
 GRAPH_ETAJ_3 = {
@@ -420,7 +428,7 @@ ETAJE = {
             "S1": {"points": ["P21"], "coords": {"x": 701.0, "y": 3241.0}},
             "S2": {"points": ["P22"], "coords": {"x": 3954.0, "y": 3130.0}},
             "S3": {"points": ["P4"], "coords": {"x": 2297.0, "y": 2240.0}},
-            "S4": {"points": ["P20"], "coords": {"x": 3600.0, "y": 570.0}},
+           
             "S5": {"points": ["P19"], "coords": {"x": 2893.0, "y": 430.0}},
             "S6": {"points": ["P18"], "coords": {"x": 1650.0, "y": 430.0}},
             "S7": {"points": ["P14"], "coords": {"x": 1950.0, "y": 1700.0}},
@@ -442,7 +450,7 @@ ETAJE = {
         "stairs": {
             "S1": {"points": ["P3"], "coords": {"x": 585.0, "y": 3301.0}},
             "S2": {"points": ["P18"], "coords": {"x": 3664.0, "y": 3320.0}},
-            "S4": {"points": ["P13"], "coords": {"x": 3420.0, "y": 835.0}},
+            
             "S5": {"points": ["P12"], "coords": {"x": 2793.0, "y": 616.0}},
             "S6": {"points": ["P15"], "coords": {"x": 1650.0, "y": 430.0}},
             "S7": {"points": ["P8"], "coords": {"x": 1830.0, "y": 1870.0}},
@@ -456,6 +464,7 @@ ETAJE = {
         "label_en": "Ground floor",
         "image_path": Path(__file__).with_name("etaj 0- original.webp"),
         "image_url": "/etaj 0- original.webp",
+        "image_version": "20260517",
         "width": 4754,
         "height": 4480,
         "points": POINTS_ETAJ_0,
@@ -463,11 +472,12 @@ ETAJE = {
         "stairs": {
             "S1": {"points": ["P1"], "coords": {"x": 1075.0, "y": 3301.0}},
             "S2": {"points": ["P6"], "coords": {"x": 4134.0, "y": 3320.0}},
-            "S4": {"points": ["P17"], "coords": {"x": 3900.0, "y": 872.0}},
+            
             "S5": {"points": ["P16"], "coords": {"x": 3223.0, "y": 710.0}},
             "S6": {"points": ["P18"], "coords": {"x": 2020.0, "y": 668.0}},
             "S7": {"points": ["P13"], "coords": {"x": 2300.0, "y": 1920.0}},
             "S8": {"points": ["P11"], "coords": {"x": 2920.0, "y": 1920.0}},
+            "S9" : {"points" : ["P2-3"], "coords" : { "x" :1880, "y": 3630}},
         },
     },
     "etaj-3": {
@@ -485,7 +495,7 @@ ETAJE = {
             "S1": {"points": ["P1"], "coords": {"x": 463, "y": 3321}},
             "S2": {"points": ["P6"], "coords": {"x": 3690.0, "y": 3330.0}},
             "S3": {"points" : ["P8"], "coords" : {"x" :2060, "y":1920}},
-            "S4": {"points": ["P18"], "coords": {"x": 3450.0, "y": 641.0}},
+          
             "S5": {"points": ["P17"], "coords": {"x": 2630.0, "y": 573.0}},
             "S6": {"points": ["P19"], "coords": {"x": 1450.0, "y": 583.0}},
             "S7": {"points": ["P13"], "coords": {"x": 1750.0, "y": 1870.0}},
@@ -525,6 +535,7 @@ ETAJE = {
             "S5": {"points": ["P9"], "coords": {"x": 2600.0, "y": 519.0}},
             "S7": {"points": ["P1"], "coords": {"x": 1690.0, "y": 1790.0}},
             "S8": {"points": ["P12"], "coords": {"x": 2320.0, "y": 1790.0}},
+            "S9" :{"points" : ["P67"],"coords" : {"x" : 1270, "y" :3740 }}
         },
         
     }
@@ -916,13 +927,17 @@ def build_combined_graph():
 
     return combined_points, combined_graph
 
-
+FLOOR_CHANGE_PENALTY = 1200.0
 def node_distance(node_a, node_b, combined_points):
-    # Mișcarea între etaje are cost fix; pe același etaj costul este distanța geometrică.
     floor_a, _ = split_node_key(node_a)
     floor_b, _ = split_node_key(node_b)
+
     if floor_a != floor_b:
-        return STAIR_TRAVEL_COST
+        level_a = get_floor_level(floor_a)
+        level_b = get_floor_level(floor_b)
+        level_difference = abs(level_b - level_a)
+        return FLOOR_CHANGE_PENALTY + STAIR_TRAVEL_COST * level_difference
+
     return distance(combined_points[node_a], combined_points[node_b])
 
 
@@ -998,6 +1013,13 @@ def clamp_coords(coords, floor_id=None, padding=24.0):
         "x": min(max(coords["x"], padding), floor_width - padding),
         "y": min(max(coords["y"], padding), floor_height - padding),
     }
+
+
+def floor_image_src(floor_config):
+    version = floor_config.get("image_version")
+    if version:
+        return f'{floor_config["image_url"]}?v={version}'
+    return floor_config["image_url"]
 
 
 def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=None):
@@ -1755,7 +1777,7 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
         </div>
 
         <div class="campus-map">
-          <img class="floor-plan" src="{escape(floor_config['image_url'])}" alt="Harta {escape(floor_config['label_ro'])}">
+          <img class="floor-plan" src="{escape(floor_image_src(floor_config))}" alt="Harta {escape(floor_config['label_ro'])}">
           <div class="map-route">{route_lines}</div>
           {start_marker}
         </div>
@@ -1807,7 +1829,7 @@ def render_page(selected_start, target_query, lang, view_floor_id=None, view_sta
 
 def app(environ, start_response):
     # Entry-point WSGI: servește fișierele statice simple și randează pagina principală.
-    path = environ.get("PATH_INFO", "/")
+    path = unquote(environ.get("PATH_INFO", "/"))
     if path == "/styles.css":
         css = STYLES_PATH.read_bytes()
         start_response("200 OK", [("Content-Type", "text/css; charset=utf-8")])
