@@ -247,7 +247,7 @@ GRAPH_ETAJ_3 = {
     "P7": ["P6","P9","P6-7"],
     "P8": ["P10", "P9"],
     "P9": ["P8","P9-15","P15"],
-    "P10": ["P8","P11","P10-13"],
+    "P10": ["P8","P11","P10-13","P13"],
     "P11": ["P11-12","P10","P1-11"],
     "P12": ["P11-12","P13"],
     "P13": ["P12", "P14"],
@@ -276,7 +276,7 @@ POINTS_ETAJ_3 = {
     "P5": {"x": 3500, "y": 3810},
     "P6": {"x": 3500, "y": 3290},
     "P7": {"x": 3500, "y": 2450},
-    "P8": {"x": 2100, "y": 2450},
+    "P8": {"x": 2075, "y": 2450},
     "P9": {"x": 2399, "y": 2450},
     "P10": {"x": 1751, "y": 2450},
     "P11": {"x": 625, "y": 2450},
@@ -1022,6 +1022,13 @@ def floor_image_src(floor_config):
     return floor_config["image_url"]
 
 
+def orientation(start_point, point, end_point):
+    A = start_point["x"] *(point["y"] - end_point["y"]) + point["x"] *(end_point["y"]- start_point["y"]) + end_point["x"] * (start_point["y"] - point["y"])
+    if A >= 0:
+        return 1
+    else:
+        return -1
+
 def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=None):
     # Transformă o secvență de noduri într-o listă de segmente SVG desenabile pe un etaj.
     floor_points = get_floor_points(floor_id)
@@ -1042,13 +1049,53 @@ def build_route_segments(point_ids, floor_id, final_coords=None, start_coords=No
         segments.append(segment)
 
 
-    """if point_ids and len(point_ids) == 1:
-        destination = clamp_coords(final_coords, floor_id)
-        segment = calculate_line(clamped_start,destination)
-        segment["class_name"] = "route-line"
+    if point_ids and len(point_ids) == 1:
         segments.pop()
-        segments.append(segment)
-        return segments"""
+        start = clamp_coords(start_coords,floor_id)
+        endi = clamp_coords(final_coords,floor_id)
+        P = floor_points[point_ids[0]]
+        if abs(start_coords["x"] - final_coords["x"]) > 30:
+            
+                s1 = {
+                    "x" : start["x"],
+                    "y": P["y"]
+                }
+                seg = calculate_line(start,s1)
+                seg["class_name"] = "route-line route-line--start"
+                segments.append(seg)
+                s2 = {
+                    "x" : endi["x"],
+                    "y" : P["y"]
+                }
+                seg = calculate_line(s1,s2)
+                seg["class_name"] = "route-line"
+                segments.append(seg)
+                seg = calculate_line(s2,endi)
+                seg["class_name"] = "route-line"
+                segments.append(seg)
+        else:
+            s1  = {
+                "x" : P["x"],
+                "y" : start["y"]
+            }
+            seg =  calculate_line(start,s1)
+            seg["class_name"] = "route-line route-line--start"
+            segments.append(seg)
+            s2 = {
+                "x" : P["x"],
+                "y" : endi["y"]
+
+            }
+            seg = calculate_line(s1,s2)
+            seg["class_name"] = "route-line"
+            segments.append(seg)
+            seg = calculate_line(s2,endi)
+            seg["class_name"] = "route-line"
+            segments.append(seg)
+
+        return segments
+
+
     print(point_ids)
     if point_ids and final_coords:
         destination = clamp_coords(final_coords, floor_id)
