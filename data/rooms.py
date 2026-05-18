@@ -45,6 +45,8 @@ ROOMS = [
   {"id": "023", "name": "023", "floor": "Etajul -1", "point": "P2", "floor_id": "subsol", "coords": {"x": 1311.0, "y": 1705.0}},
   {"id": "024", "name": "024", "floor": "Etajul -1", "point": "P8", "floor_id": "subsol", "coords": {"x": 1938.0, "y": 1121.0}},
   {"id": "017", "name": "017", "floor": "Etajul -1", "point": "P6", "floor_id": "subsol", "coords": {"x": 2085.0, "y": 1624.0}},
+   {"id": "032", "name": "032", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3467.0, "y": 1196.0}},
+
   {"id": "041", "name": "041", "floor": "Etajul -1", "point": "P12", "floor_id": "subsol", "coords": {"x": 2293.0, "y": 1600.0}},
   {"id": "042", "name": "042", "floor": "Etajul -1", "point": "P13", "floor_id": "subsol", "coords": {"x": 2446.0, "y": 1596.0}},
   {"id": "026", "name": "026", "floor": "Etajul -1", "point": "P13", "floor_id": "subsol", "coords": {"x": 2546.0, "y": 1637.0}},
@@ -57,8 +59,7 @@ ROOMS = [
   {"id": "057", "name": "057", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3509.0, "y": 617.0}},
   {"id": "056", "name": "056", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3519.0, "y": 746.0}},
   {"id": "055", "name": "055", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3522.0, "y": 875.0}},
-  {"id": "032", "name": "032", "floor": "Etajul -1", "point": "P82", "floor_id": "subsol", "coords": {"x": 3467.0, "y": 1196.0}},
-
+ 
   
   {'id': '101',
   'name': '101',
