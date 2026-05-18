@@ -36,6 +36,7 @@ ROOMS = [
   'point': 'P8',
   'floor_id': 'etaj-0',
   'coords': {'x': 2630.0, 'y': 2700.0}},
+    {"id": "017", "name": "017", "floor": "Etajul -1", "point": "P6", "floor_id": "subsol", "coords": {"x": 2085.0, "y": 1624.0}},
   {"id": "018", "name": "018", "floor": "Etajul -1", "point": "P3", "floor_id": "subsol", "coords": {"x": 521.0, "y": 2017.0}},
   {"id": "019", "name": "019", "floor": "Etajul -1", "point": "P2", "floor_id": "subsol", "coords": {"x": 425.0, "y": 1753.0}},
   {"id": "020", "name": "020", "floor": "Etajul -1", "point": "P2", "floor_id": "subsol", "coords": {"x": 477.0, "y": 1707.0}},
@@ -44,23 +45,22 @@ ROOMS = [
   {"id": "022B", "name": "022B", "floor": "Etajul -1", "point": "P2", "floor_id": "subsol", "coords": {"x": 967.0, "y": 1703.0}},
   {"id": "023", "name": "023", "floor": "Etajul -1", "point": "P2", "floor_id": "subsol", "coords": {"x": 1311.0, "y": 1705.0}},
   {"id": "024", "name": "024", "floor": "Etajul -1", "point": "P8", "floor_id": "subsol", "coords": {"x": 1938.0, "y": 1121.0}},
-  {"id": "017", "name": "017", "floor": "Etajul -1", "point": "P6", "floor_id": "subsol", "coords": {"x": 2085.0, "y": 1624.0}},
+  {"id": "026", "name": "026", "floor": "Etajul -1", "point": "P13", "floor_id": "subsol", "coords": {"x": 2546.0, "y": 1637.0}},
    {"id": "032", "name": "032", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3467.0, "y": 1196.0}},
 
   {"id": "041", "name": "041", "floor": "Etajul -1", "point": "P12", "floor_id": "subsol", "coords": {"x": 2293.0, "y": 1600.0}},
   {"id": "042", "name": "042", "floor": "Etajul -1", "point": "P13", "floor_id": "subsol", "coords": {"x": 2446.0, "y": 1596.0}},
-  {"id": "026", "name": "026", "floor": "Etajul -1", "point": "P13", "floor_id": "subsol", "coords": {"x": 2546.0, "y": 1637.0}},
-  {"id": "061", "name": "061", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 2824.0, "y": 586.0}},
-  {"id": "062", "name": "062", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 2912.0, "y": 580.0}},
-  {"id": "063", "name": "063", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 3077.0, "y": 577.0}},
-  {"id": "060", "name": "060", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 3286.0, "y": 582.0}},
+ 
   {"id": "059", "name": "059", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 3458.0, "y": 456.0}},
   {"id": "058", "name": "058", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3522.0, "y": 506.0}},
   {"id": "057", "name": "057", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3509.0, "y": 617.0}},
   {"id": "056", "name": "056", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3519.0, "y": 746.0}},
   {"id": "055", "name": "055", "floor": "Etajul -1", "point": "P11", "floor_id": "subsol", "coords": {"x": 3522.0, "y": 875.0}},
- 
-  
+  {"id": "060", "name": "060", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 3286.0, "y": 582.0}},
+  {"id": "061", "name": "061", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 2824.0, "y": 586.0}},
+  {"id": "062", "name": "062", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 2912.0, "y": 580.0}},
+  {"id": "063", "name": "063", "floor": "Etajul -1", "point": "P10", "floor_id": "subsol", "coords": {"x": 3077.0, "y": 577.0}},
+
   {'id': '101',
   'name': '101',
   'floor': 'Etajul 0',
